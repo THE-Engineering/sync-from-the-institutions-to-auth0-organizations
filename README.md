@@ -2,7 +2,7 @@
 
 Watches a THE reference data endpoint to syncronise with Auth0
 
-## `organizations`
+## `sync`
 
 Syncronises THE Institutions to Auth0 Organizations. This application is expected to run _forever_
 
@@ -154,7 +154,7 @@ Otherwise
 
 ### Starting with a programmatic token
 
-See `organizations` for how to get a programmatic token
+See `sync` for how to get a programmatic token
 
 With NPM
 
@@ -206,7 +206,7 @@ Otherwise
 
 ### Starting with a programmatic token
 
-See `organizations` for how to get a programmatic token
+See `sync` for how to get a programmatic token
 
 With NPM
 
