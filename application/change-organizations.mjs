@@ -1,7 +1,4 @@
 import {
-  isDeepStrictEqual
-} from 'node:util'
-import {
   STATUS_PATH
 } from '#config'
 import toStatusFilePath from '#utils/to-status-file-path'
@@ -13,12 +10,10 @@ import sleepFor, {
 } from '#utils/sleep-for'
 import {
   getId as getInstitutionId,
-  getDisplayName as getDisplayNameFromInstitution,
-  getMetadata as getMetadataFromInstitution
+  getDisplayName as getDisplayNameFromInstitution
 } from './institution.mjs'
 import {
   getDisplayName as getDisplayNameFromOrganization,
-  getMetadata as getMetadataFromOrganization,
   createOrganization,
   updateOrganizationById
 } from './organization.mjs'
@@ -38,11 +33,9 @@ export default async function changeOrganizations (organizations, institutions) 
     if (organizations.some(hasName)) {
       const organization = organizations.find(hasName)
       const displayName = getDisplayNameFromInstitution(institution)
-      const metadata = getMetadataFromInstitution(institution)
 
       if (
-        displayName !== getDisplayNameFromOrganization(organization) ||
-        !isDeepStrictEqual(metadata, getMetadataFromOrganization(organization))) {
+        displayName !== getDisplayNameFromOrganization(organization)) {
         const {
           id,
           ...rest
@@ -50,7 +43,7 @@ export default async function changeOrganizations (organizations, institutions) 
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: displayName, metadata })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: displayName })
         } catch (e) {
           status = toStatusFromError(e)
 
@@ -62,7 +55,7 @@ export default async function changeOrganizations (organizations, institutions) 
     } else {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: getDisplayNameFromInstitution(institution), metadata: getMetadataFromInstitution(institution) })
+        status = await createOrganization({ name: institutionId, display_name: getDisplayNameFromInstitution(institution) })
       } catch (e) {
         status = toStatusFromError(e)
 

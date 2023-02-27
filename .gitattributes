@@ -3,3 +3,5 @@
 
 # LF line endings
 *.sh text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf
