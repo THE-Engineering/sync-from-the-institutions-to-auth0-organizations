@@ -1,0 +1,46 @@
+{
+  "name": "sync-from-the-institutions-to-auth0-organizations",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.mjs",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/THE-Engineering/sync-from-the-institutions-to-auth0-organizations.git"
+  },
+  "homepage": "https://github.com/THE-Engineering/sync-from-the-institutions-to-auth0-organizations#readme",
+  "bugs": {
+    "url": "https://github.com/THE-Engineering/sync-from-the-institutions-to-auth0-organizations/issues"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .mjs --ext .cjs",
+    "lint:fix": "npm run lint -- --fix",
+    "create": "node scripts/create.mjs",
+    "remove": "node scripts/remove.mjs",
+    "sync": "node scripts/sync.mjs"
+  },
+  "dependencies": {
+    "fs-extra": "^11.1.0",
+    "nconf": "^0.12.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-env": "^7.20.2",
+    "core-js": "^3.29.0",
+    "eslint": "^8.35.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "imports": {
+    "#application/*": "./application/*.mjs",
+    "#config": "./config/index.mjs",
+    "#config/*": "./config/*.mjs",
+    "#utils": "./utils/index.mjs",
+    "#utils/*": "./utils/*.mjs"
+  }
+}
