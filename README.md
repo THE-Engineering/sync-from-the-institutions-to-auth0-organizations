@@ -51,7 +51,7 @@ You need only the _Domain_ of your Auth0 account and a manual _Access Token_
 With NPM
 
 ```bash
-npm run organizations -- \
+npm run sync -- \
  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
  --NAP 1800000
@@ -60,7 +60,7 @@ npm run organizations -- \
 Otherwise
 
 ```bash
-./scripts/organizations.mjs \
+./scripts/sync.mjs \
  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
  --NAP 1800000
@@ -105,7 +105,7 @@ In review
 With NPM
 
 ```bash
-npm run organizations -- \
+npm run sync -- \
   --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
   --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
   --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
@@ -117,7 +117,7 @@ npm run organizations -- \
 Otherwise
 
 ```bash
-./scripts/organizations.mjs \
+./scripts/sync.mjs \
   --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
   --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
   --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
