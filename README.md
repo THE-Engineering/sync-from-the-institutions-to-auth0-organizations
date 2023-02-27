@@ -242,7 +242,7 @@ Neither `create` nor `remove` implement the `NAP` argument
 
 In development you may prefer to omit the `NAP` argument, but in production you are likely to require it
 
-# Institutions endpoint
+## Institutions endpoint
 
 The `THE_INSTITUTIONS_ENDPOINT` argument is a URL. The default value is the Production endpoint URL
 
