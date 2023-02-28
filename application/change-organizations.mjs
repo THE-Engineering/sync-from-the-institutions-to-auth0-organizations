@@ -1,8 +1,8 @@
 import {
   STATUS_PATH
 } from '#config'
-import toStatusFilePath from '#utils/to-status-file-path'
 import toStatusFromError from '#utils/to-status-from-error'
+import toStatusFilePath from '#utils/to-status-file-path'
 import writeStatusToFilePath from '#utils/write-status-to-file-path'
 import sleepFor, {
   ONE_SECOND,
@@ -20,7 +20,7 @@ import {
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
-export default async function changeOrganizations (organizations, institutions) {
+export default async function changeOrganizations (institutions, organizations) {
   while (institutions.length) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
