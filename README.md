@@ -191,7 +191,7 @@ You may use either a [manual or programmatic access token](https://auth0.com/doc
 With NPM
 
 ```bash
-npm run create -- \
+npm run remove -- \
  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
@@ -199,7 +199,7 @@ npm run create -- \
 Otherwise
 
 ```bash
-./scripts/create.mjs \
+./scripts/remove.mjs \
  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
