@@ -1,4 +1,7 @@
 import {
+  isDeepStrictEqual
+} from 'node:util'
+import {
   URL
 } from 'node:url'
 import {
@@ -8,6 +11,9 @@ import getHeaders from '#utils/get-headers'
 import sleepFor, {
   ONE_SECOND
 } from '#utils/sleep-for'
+import {
+  getName as getOrganizationName
+} from './organization.mjs'
 
 export async function getOrganizations (from, accumulator = []) {
   /**
@@ -40,4 +46,110 @@ export async function getOrganizations (from, accumulator = []) {
   }
 
   return accumulator.concat(organizations)
+}
+
+export function getChangedOrganizations (alpha = [], omega = []) {
+  return (
+    alpha.reduce((accumulator, organizationAlpha) => {
+      const organizationName = getOrganizationName(organizationAlpha)
+
+      function hasOrganizationName (organization) {
+        return getOrganizationName(organization) === organizationName
+      }
+
+      if (omega.some(hasOrganizationName)) {
+        const organizationOmega = omega.find(hasOrganizationName)
+
+        return (
+          isDeepStrictEqual(organizationAlpha, organizationOmega)
+            ? accumulator
+            : accumulator.concat(organizationOmega)
+        )
+      }
+
+      return accumulator
+    }, [])
+  )
+}
+
+export function hasChangedOrganizations (alpha = [], omega = []) {
+  return !(
+    alpha.every((organizationAlpha) => {
+      const organizationName = getOrganizationName(organizationAlpha)
+
+      function hasOrganizationName (organization) {
+        return getOrganizationName(organization) === organizationName
+      }
+
+      if (omega.every(hasOrganizationName)) {
+        const organizationOmega = omega.find(hasOrganizationName)
+
+        return (
+          isDeepStrictEqual(organizationAlpha, organizationOmega)
+        )
+      }
+
+      return true
+    })
+  )
+}
+
+export function getRemovedOrganizations (alpha = [], omega = []) {
+  return (
+    alpha.reduce((accumulator, organization) => {
+      const organizationName = getOrganizationName(organization)
+
+      return (
+        omega.some((organization) => getOrganizationName(organization) === organizationName)
+          ? accumulator
+          : accumulator.concat(organization)
+      )
+    }, [])
+  )
+}
+
+export function hasRemovedOrganizations (alpha = [], omega = []) {
+  return !(
+    alpha.every((organization) => {
+      const organizationName = getOrganizationName(organization)
+
+      return (
+        omega.some((organization) => getOrganizationName(organization) === organizationName)
+      )
+    })
+  )
+}
+
+export function getAddedOrganizations (alpha = [], omega = []) {
+  return (
+    omega.reduce((accumulator, organization) => {
+      const organizationName = getOrganizationName(organization)
+
+      return (
+        alpha.some((organization) => getOrganizationName(organization) === organizationName)
+          ? accumulator
+          : accumulator.concat(organization)
+      )
+    }, [])
+  )
+}
+
+export function hasAddedOrganizations (alpha = [], omega = []) {
+  return !(
+    omega.every((organization) => {
+      const organizationName = getOrganizationName(organization)
+
+      return (
+        alpha.some((organization) => getOrganizationName(organization) === organizationName)
+      )
+    })
+  )
+}
+
+export function validate (was = [], now = []) {
+  return !(
+    hasChangedOrganizations(was, now) ||
+    hasRemovedOrganizations(was, now) ||
+    hasAddedOrganizations(was, now)
+  )
 }

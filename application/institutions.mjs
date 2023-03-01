@@ -21,11 +21,11 @@ import {
   getId as getInstitutionId
 } from './institution.mjs'
 
-function getRowCount ({ rowCount = 0 }) {
+export function getRowCount ({ rowCount = 0 }) {
   return rowCount
 }
 
-function getRows ({ rows = [] }) {
+export function getRows ({ rows = [] }) {
   return rows
 }
 
@@ -100,47 +100,107 @@ export async function deleteInstitutionsFromFilePath (filePath) {
 }
 
 export function getChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
-  return rowsAlpha.reduce((accumulator, institutionAlpha) => {
-    const institutionId = getInstitutionId(institutionAlpha)
+  return (
+    rowsAlpha.reduce((accumulator, institutionAlpha) => {
+      const institutionId = getInstitutionId(institutionAlpha)
 
-    function hasInstitutionId (institution) {
-      return getInstitutionId(institution) === institutionId
-    }
+      function hasInstitutionId (institution) {
+        return getInstitutionId(institution) === institutionId
+      }
 
-    if (rowsOmega.some(hasInstitutionId)) {
-      const institutionOmega = rowsOmega.find(hasInstitutionId)
+      if (rowsOmega.some(hasInstitutionId)) {
+        const institutionOmega = rowsOmega.find(hasInstitutionId)
 
-      return (
-        isDeepStrictEqual(institutionAlpha, institutionOmega)
-          ? accumulator
-          : accumulator.concat(institutionOmega)
-      )
-    }
+        return (
+          isDeepStrictEqual(institutionAlpha, institutionOmega)
+            ? accumulator
+            : accumulator.concat(institutionOmega)
+        )
+      }
 
-    return accumulator
-  }, [])
+      return accumulator
+    }, [])
+  )
+}
+
+export function hasChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+  return !(
+    rowsAlpha.every((institutionAlpha) => {
+      const institutionId = getInstitutionId(institutionAlpha)
+
+      function hasInstitutionId (institution) {
+        return getInstitutionId(institution) === institutionId
+      }
+
+      if (rowsOmega.every(hasInstitutionId)) {
+        const institutionOmega = rowsOmega.find(hasInstitutionId)
+
+        return (
+          isDeepStrictEqual(institutionAlpha, institutionOmega)
+        )
+      }
+
+      return true
+    })
+  )
 }
 
 export function getRemovedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
-  return rowsAlpha.reduce((accumulator, institution) => {
-    const institutionId = getInstitutionId(institution)
+  return (
+    rowsAlpha.reduce((accumulator, institution) => {
+      const institutionId = getInstitutionId(institution)
 
-    return (
-      rowsOmega.some((institution) => getInstitutionId(institution) === institutionId)
-        ? accumulator
-        : accumulator.concat(institution)
-    )
-  }, [])
+      return (
+        rowsOmega.some((institution) => getInstitutionId(institution) === institutionId)
+          ? accumulator
+          : accumulator.concat(institution)
+      )
+    }, [])
+  )
+}
+
+export function hasRemovedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+  return !(
+    rowsAlpha.every((institution) => {
+      const institutionId = getInstitutionId(institution)
+
+      return (
+        rowsOmega.some((institution) => getInstitutionId(institution) === institutionId)
+      )
+    })
+  )
 }
 
 export function getAddedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
-  return rowsOmega.reduce((accumulator, institution) => {
-    const institutionId = getInstitutionId(institution)
+  return (
+    rowsOmega.reduce((accumulator, institution) => {
+      const institutionId = getInstitutionId(institution)
 
-    return (
-      rowsAlpha.some((institution) => getInstitutionId(institution) === institutionId)
-        ? accumulator
-        : accumulator.concat(institution)
-    )
-  }, [])
+      return (
+        rowsAlpha.some((institution) => getInstitutionId(institution) === institutionId)
+          ? accumulator
+          : accumulator.concat(institution)
+      )
+    }, [])
+  )
+}
+
+export function hasAddedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+  return !(
+    rowsOmega.every((institution) => {
+      const institutionId = getInstitutionId(institution)
+
+      return (
+        rowsAlpha.some((institution) => getInstitutionId(institution) === institutionId)
+      )
+    })
+  )
+}
+
+export function validate (was = {}, now = {}) {
+  return !(
+    hasChangedInstitutions(was, now) ||
+    hasRemovedInstitutions(was, now) ||
+    hasAddedInstitutions(was, now)
+  )
 }

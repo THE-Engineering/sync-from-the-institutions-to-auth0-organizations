@@ -7,6 +7,10 @@ export function getId ({ id }) {
   return id
 }
 
+export function getName ({ name }) {
+  return name
+}
+
 export function getDisplayName ({ display_name: displayName }) {
   return displayName
 }
