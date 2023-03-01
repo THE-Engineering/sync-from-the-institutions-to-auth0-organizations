@@ -99,17 +99,17 @@ export async function deleteInstitutionsFromFilePath (filePath) {
   }
 }
 
-export function getChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function getChangedInstitutions (alpha = {}, omega = {}) {
   return (
-    rowsAlpha.reduce((accumulator, institutionAlpha) => {
+    getRows(alpha).reduce((accumulator, institutionAlpha) => {
       const institutionId = getInstitutionId(institutionAlpha)
 
       function hasInstitutionId (institution) {
         return getInstitutionId(institution) === institutionId
       }
 
-      if (rowsOmega.some(hasInstitutionId)) {
-        const institutionOmega = rowsOmega.find(hasInstitutionId)
+      if (getRows(omega).some(hasInstitutionId)) {
+        const institutionOmega = getRows(omega).find(hasInstitutionId)
 
         return (
           isDeepStrictEqual(institutionAlpha, institutionOmega)
@@ -123,17 +123,17 @@ export function getChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: r
   )
 }
 
-export function hasChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function hasChangedInstitutions (alpha = {}, omega = {}) {
   return !(
-    rowsAlpha.every((institutionAlpha) => {
+    getRows(alpha).every((institutionAlpha) => {
       const institutionId = getInstitutionId(institutionAlpha)
 
       function hasInstitutionId (institution) {
         return getInstitutionId(institution) === institutionId
       }
 
-      if (rowsOmega.every(hasInstitutionId)) {
-        const institutionOmega = rowsOmega.find(hasInstitutionId)
+      if (getRows(omega).every(hasInstitutionId)) {
+        const institutionOmega = getRows(omega).find(hasInstitutionId)
 
         return (
           isDeepStrictEqual(institutionAlpha, institutionOmega)
@@ -145,13 +145,13 @@ export function hasChangedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: r
   )
 }
 
-export function getRemovedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function getRemovedInstitutions (alpha = {}, omega = {}) {
   return (
-    rowsAlpha.reduce((accumulator, institution) => {
+    getRows(alpha).reduce((accumulator, institution) => {
       const institutionId = getInstitutionId(institution)
 
       return (
-        rowsOmega.some((institution) => getInstitutionId(institution) === institutionId)
+        getRows(omega).some((institution) => getInstitutionId(institution) === institutionId)
           ? accumulator
           : accumulator.concat(institution)
       )
@@ -159,25 +159,25 @@ export function getRemovedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: r
   )
 }
 
-export function hasRemovedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function hasRemovedInstitutions (alpha = {}, omega = {}) {
   return !(
-    rowsAlpha.every((institution) => {
+    getRows(alpha).every((institution) => {
       const institutionId = getInstitutionId(institution)
 
       return (
-        rowsOmega.some((institution) => getInstitutionId(institution) === institutionId)
+        getRows(omega).some((institution) => getInstitutionId(institution) === institutionId)
       )
     })
   )
 }
 
-export function getAddedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function getAddedInstitutions (alpha = {}, omega = {}) {
   return (
-    rowsOmega.reduce((accumulator, institution) => {
+    getRows(omega).reduce((accumulator, institution) => {
       const institutionId = getInstitutionId(institution)
 
       return (
-        rowsAlpha.some((institution) => getInstitutionId(institution) === institutionId)
+        getRows(alpha).some((institution) => getInstitutionId(institution) === institutionId)
           ? accumulator
           : accumulator.concat(institution)
       )
@@ -185,13 +185,13 @@ export function getAddedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: row
   )
 }
 
-export function hasAddedInstitutions ({ rows: rowsAlpha = [] } = {}, { rows: rowsOmega = [] } = {}) {
+export function hasAddedInstitutions (alpha = {}, omega = {}) {
   return !(
-    rowsOmega.every((institution) => {
+    getRows(omega).every((institution) => {
       const institutionId = getInstitutionId(institution)
 
       return (
-        rowsAlpha.some((institution) => getInstitutionId(institution) === institutionId)
+        getRows(alpha).some((institution) => getInstitutionId(institution) === institutionId)
       )
     })
   )
