@@ -16,6 +16,7 @@
   "scripts": {
     "lint": "eslint . --ext .mjs --ext .cjs",
     "lint:fix": "npm run lint -- --fix",
+    "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=tests/.env mocha tests -r dotenv/config --recursive --verbose --color",
     "create": "node scripts/create.mjs",
     "remove": "node scripts/remove.mjs",
     "sync": "node scripts/sync.mjs"
@@ -29,12 +30,16 @@
     "@babel/core": "^7.21.0",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
+    "chai": "^4.3.7",
     "core-js": "^3.29.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "eslint": "^8.35.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "mocha": "^10.2.0"
   },
   "imports": {
     "#application/*": "./application/*.mjs",

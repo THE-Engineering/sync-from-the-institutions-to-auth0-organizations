@@ -132,7 +132,7 @@ export function hasChangedInstitutions (alpha = {}, omega = {}) {
         return getInstitutionId(institution) === institutionId
       }
 
-      if (getRows(omega).every(hasInstitutionId)) {
+      if (getRows(omega).some(hasInstitutionId)) {
         const institutionOmega = getRows(omega).find(hasInstitutionId)
 
         return (

@@ -81,7 +81,7 @@ export function hasChangedOrganizations (alpha = [], omega = []) {
         return getOrganizationName(organization) === organizationName
       }
 
-      if (omega.every(hasOrganizationName)) {
+      if (omega.some(hasOrganizationName)) {
         const organizationOmega = omega.find(hasOrganizationName)
 
         return (
