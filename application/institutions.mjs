@@ -21,11 +21,11 @@ import {
   getId as getInstitutionId
 } from './institution.mjs'
 
-export function getRowCount ({ rowCount = 0 }) {
+export function getRowCount ({ rowCount = 0 } = {}) {
   return rowCount
 }
 
-export function getRows ({ rows = [] }) {
+export function getRows ({ rows = [] } = {}) {
   return rows
 }
 

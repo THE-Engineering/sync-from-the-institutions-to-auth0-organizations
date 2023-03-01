@@ -7,6 +7,7 @@ import {
   THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT
 } from '#config'
 import {
+  getRows,
   readInstitutionsFromEndpoint,
   writeInstitutionsToFilePath
 } from '#application/institutions'
@@ -18,15 +19,12 @@ import changeOrganizations from '#application/change-organizations'
 async function app () {
   console.log('🚀')
 
-  const INSTIUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
-  const {
-    rows: institutions = []
-  } = INSTIUTIONS
+  const INSTITUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
   const ORGANIZATIONS = await getOrganizations()
 
-  await changeOrganizations([...institutions], ORGANIZATIONS) // duplicate the array
+  await changeOrganizations([...getRows(INSTITUTIONS)], ORGANIZATIONS) // duplicate the array
 
-  await writeInstitutionsToFilePath(FILE_PATH, INSTIUTIONS)
+  await writeInstitutionsToFilePath(FILE_PATH, INSTITUTIONS)
 
   console.log('👍')
 }

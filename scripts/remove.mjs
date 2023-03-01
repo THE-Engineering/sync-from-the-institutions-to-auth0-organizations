@@ -7,6 +7,7 @@ import {
   THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT
 } from '#config'
 import {
+  getRows,
   readInstitutionsFromEndpoint,
   deleteInstitutionsFromFilePath
 } from '#application/institutions'
@@ -15,12 +16,9 @@ import remove from '#application/remove'
 async function app () {
   console.log('🚀')
 
-  const INSTIUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
-  const {
-    rows: institutions = []
-  } = INSTIUTIONS
+  const INSTITUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
 
-  await remove(institutions) // no need to duplicate the array
+  await remove(getRows(INSTITUTIONS)) // no need to duplicate the array
 
   await deleteInstitutionsFromFilePath(FILE_PATH)
 
