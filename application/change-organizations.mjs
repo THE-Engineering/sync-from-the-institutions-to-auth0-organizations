@@ -10,10 +10,10 @@ import sleepFor, {
 } from '#utils/sleep-for'
 import {
   getId as getInstitutionId,
-  getDisplayName as getDisplayNameFromInstitution
+  getName as getInstitutionName
 } from './institution.mjs'
 import {
-  getDisplayName as getDisplayNameFromOrganization,
+  getDisplayName as getOrganizationDisplayName,
   createOrganization,
   updateOrganizationById
 } from './organization.mjs'
@@ -32,10 +32,10 @@ export default async function changeOrganizations (institutions, organizations) 
     console.log(`👉 ${institutionId}`)
     if (organizations.some(hasName)) {
       const organization = organizations.find(hasName)
-      const displayName = getDisplayNameFromInstitution(institution)
+      const institutionName = getInstitutionName(institution)
 
       if (
-        displayName !== getDisplayNameFromOrganization(organization)) {
+        institutionName !== getOrganizationDisplayName(organization)) {
         const {
           id,
           ...rest
@@ -43,7 +43,7 @@ export default async function changeOrganizations (institutions, organizations) 
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: displayName })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName })
         } catch (e) {
           status = toStatusFromError(e)
 
@@ -55,7 +55,7 @@ export default async function changeOrganizations (institutions, organizations) 
     } else {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: getDisplayNameFromInstitution(institution) })
+        status = await createOrganization({ name: institutionId, display_name: getInstitutionName(institution) })
       } catch (e) {
         status = toStatusFromError(e)
 

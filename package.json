@@ -19,6 +19,7 @@
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=tests/.env mocha tests -r dotenv/config --recursive --verbose --color",
     "create": "node scripts/create.mjs",
     "remove": "node scripts/remove.mjs",
+    "validate": "node scripts/validate.mjs",
     "sync": "node scripts/sync.mjs"
   },
   "dependencies": {

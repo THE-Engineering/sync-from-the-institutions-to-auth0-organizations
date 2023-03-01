@@ -7,20 +7,21 @@ import {
   getOrganizations
 } from '#application/organizations'
 import {
-  deleteInstitutionsFromFilePath
+  readInstitutionsFromFilePath
 } from '#application/institutions'
-import removeOrganizations from '#application/remove-organizations'
+import validate from '#application/validate'
 
 async function app () {
   console.log('🚀')
 
-  const ORGANIZATIONS = await getOrganizations()
+  const organizations = await getOrganizations()
+  const institutions = await readInstitutionsFromFilePath(FILE_PATH)
 
-  await removeOrganizations(ORGANIZATIONS)
+  const isValid = validate(organizations, institutions)
 
-  await deleteInstitutionsFromFilePath(FILE_PATH)
+  console.log(isValid ? '👍' : '👎')
 
-  console.log('👍')
+  return isValid
 }
 
 const {

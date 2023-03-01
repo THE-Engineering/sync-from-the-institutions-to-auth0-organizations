@@ -196,11 +196,3 @@ export function hasAddedInstitutions (alpha = {}, omega = {}) {
     })
   )
 }
-
-export function validate (was = {}, now = {}) {
-  return !(
-    hasChangedInstitutions(was, now) ||
-    hasRemovedInstitutions(was, now) ||
-    hasAddedInstitutions(was, now)
-  )
-}

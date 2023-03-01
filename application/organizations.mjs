@@ -145,11 +145,3 @@ export function hasAddedOrganizations (alpha = [], omega = []) {
     })
   )
 }
-
-export function validate (was = [], now = []) {
-  return !(
-    hasChangedOrganizations(was, now) ||
-    hasRemovedOrganizations(was, now) ||
-    hasAddedOrganizations(was, now)
-  )
-}

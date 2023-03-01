@@ -2,8 +2,8 @@ export function getId ({ iid }) {
   return iid
 }
 
-export function getDisplayName ({ name: displayName }) {
-  return displayName
+export function getName ({ name }) {
+  return name
 }
 
 export function getMetadata ({
