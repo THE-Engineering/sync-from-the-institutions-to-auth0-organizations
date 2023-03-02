@@ -41,11 +41,19 @@ export async function getOrganizations (from, accumulator = []) {
     await sleepFor(ONE_SECOND)
 
     return (
-      getOrganizations(next, accumulator.concat(organizations))
+      getOrganizations(next, (
+        organizations
+          ? accumulator.concat(organizations)
+          : accumulator
+      ))
     )
   }
 
-  return accumulator.concat(organizations)
+  return (
+    organizations
+      ? accumulator.concat(organizations)
+      : accumulator
+  )
 }
 
 export function getChangedOrganizations (alpha = [], omega = []) {
