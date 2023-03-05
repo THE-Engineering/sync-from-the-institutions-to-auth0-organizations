@@ -2,6 +2,6 @@
 * text=auto
 
 # LF line endings
-*.sh text eol=lf
+*.sh  text eol=lf
 *.cjs text eol=lf
 *.mjs text eol=lf
