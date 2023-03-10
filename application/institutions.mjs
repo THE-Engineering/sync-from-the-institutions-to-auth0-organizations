@@ -76,16 +76,18 @@ export async function readInstitutionsFromEndpoint (
 export async function readInstitutionsFromFilePath (filePath) {
   try {
     await ensureDir(dirname(filePath))
-    return JSON.parse(await readFile(filePath, 'utf8'))
+    const fileData = await readFile(filePath, 'utf8')
+    return JSON.parse(fileData.toString())
   } catch (e) {
     handleFilePathError(e)
   }
 }
 
-export async function writeInstitutionsToFilePath (filePath, fileData) {
+export async function writeInstitutionsToFilePath (filePath, institutions = {}) {
   try {
     await ensureDir(dirname(filePath))
-    await writeFile(filePath, JSON.stringify(fileData, null, 2), 'utf8')
+    const fileData = JSON.stringify(institutions, null, 2)
+    await writeFile(filePath, fileData, 'utf8')
   } catch (e) {
     handleFilePathError(e)
   }
