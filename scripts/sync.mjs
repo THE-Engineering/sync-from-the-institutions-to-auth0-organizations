@@ -12,6 +12,11 @@ import {
 } from '#config'
 import sleepFor from '#utils/sleep-for'
 import {
+  getHeapUsed,
+  toMB,
+  toPlaces
+} from '#utils/memory-usage'
+import {
   readInstitutionsFromFilePath,
   readInstitutionsFromEndpoint,
   writeInstitutionsToFilePath,
@@ -35,14 +40,20 @@ async function app () {
 
     await writeInstitutionsToFilePath(FILE_PATH, now)
   }
+}
+
+async function run () {
+  if ('gc' in global) gc()
+
+  await app()
 
   if (args.has('NAP')) {
     const nap = Number(args.get('NAP'))
 
-    console.log(`😴 "I'm just resting my eyes until ${(new Date(Date.now() + nap)).toLocaleTimeString()}"`)
+    console.log(`😴 "I'm just resting my eyes until ${(new Date(Date.now() + nap)).toLocaleTimeString()}" (${toPlaces(toMB(getHeapUsed()), 2)} MB)`)
 
     await sleepFor(nap)
-    await app()
+    setImmediate(run)
   }
 }
 
@@ -52,4 +63,4 @@ const {
 
 console.log(`🫡 in process ${pid}`)
 
-export default app()
+export default run()
