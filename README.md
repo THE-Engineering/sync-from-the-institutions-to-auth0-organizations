@@ -52,18 +52,18 @@ With NPM
 
 ```bash
 npm run sync -- \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
- --NAP 1800000
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --NAP 1800000
 ```
 
 Otherwise
 
 ```bash
 ./scripts/sync.mjs \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
- --NAP 1800000
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --NAP 1800000
 ```
 
 ### Starting with a programmatic token
@@ -140,16 +140,16 @@ With NPM
 
 ```bash
 npm run create -- \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 Otherwise
 
 ```bash
 ./scripts/create.mjs \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 ### Starting with a programmatic token
@@ -192,16 +192,16 @@ With NPM
 
 ```bash
 npm run remove -- \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 Otherwise
 
 ```bash
 ./scripts/remove.mjs \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 ### Starting with a programmatic token
