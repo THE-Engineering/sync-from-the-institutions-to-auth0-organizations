@@ -1,11 +1,13 @@
 version: '3'
 services:
   sync-from-the-institutions-to-auth0-organizations:
-    image: 'node:18-alpine'
+    image: sync-from-the-institutions-to-auth0-organizations
     container_name: sync-from-the-institutions-to-auth0-organizations
     working_dir: /app
     restart: unless-stopped
     env_file: .env
     volumes:
       - './:/app'
-    command: npm run sync
+    command: >
+      sh -c "echo \"update-notifier=false\" > .npmrc && \
+      npm run sync"

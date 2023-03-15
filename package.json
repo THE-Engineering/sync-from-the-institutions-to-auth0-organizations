@@ -5,6 +5,9 @@
   "main": "./index.mjs",
   "type": "module",
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.15.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/THE-Engineering/sync-from-the-institutions-to-auth0-organizations.git"
