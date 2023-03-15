@@ -244,16 +244,16 @@ With NPM
 
 ```bash
 npm run validate -- \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 Otherwise
 
 ```bash
 ./scripts/validate.mjs \
- --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
- --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
 ### Starting with a programmatic token
@@ -307,3 +307,46 @@ The _limit_ describes the number of results to return in each request
 The `THE_INSTITUTIONS_ENDPOINT_COUNT` argument is a number. The default value is `0`
 
 The _count_ can be used to initialise the _start page_ of results (but be aware that the process will start from that page and continue to the _last page_ of results)
+
+## Stats
+
+You can monitor _heap_ memory usage with some boolean environment variables or command line arguments
+
+### `heap-statistics`
+
+Prints a _table_ of memory usage statistics _in MB_ to the console
+
+### `heap-total`
+
+Prints a _number_ which is the heap total _size in MB_ to the console
+
+### `heap-used`
+
+Prints a _number_ which is the heap used _size in MB_ to the console
+
+### `heap-percent`
+
+Prints a _table_ which has the `old_space` and `new_space` _percent_ to the console
+
+#### Environment variables
+
+Omission of an environment variable implies its default value of `false`
+
+```dotenv
+heap-statistics=true
+heap-total=false
+heap-used=false
+heap-percent=true
+```
+
+#### Command line arguments
+
+Omission of a command line argument implies its default value of `false`
+
+```shell
+npm run sync -- \
+  heap-statistics \
+  heap-total false \
+  heap-used false \
+  heap-percent
+```
