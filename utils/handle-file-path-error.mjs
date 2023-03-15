@@ -1,13 +1,17 @@
 export default function handleFilePathError (e) {
   const {
-    code = 'No code defined'
+    code
   } = e
 
   if (code !== 'ENOENT') {
     const {
-      message = 'No message defined'
+      message
     } = e
 
-    console.log(`💥 ${code} - ${message}`)
+    console.error(
+      (code)
+        ? `💥 ${code} - ${message}`
+        : `💥 ${message}`
+    )
   }
 }
