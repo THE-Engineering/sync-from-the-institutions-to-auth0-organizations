@@ -350,3 +350,17 @@ npm run sync -- \
   heap-used false \
   heap-percent
 ```
+
+## Docker
+
+### Building the Docker image
+
+```bash
+docker build -t sync-from-the-institutions-to-auth0-organizations .
+```
+
+### Starting the Docker container
+
+```bash
+docker compose up -d
+```
