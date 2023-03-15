@@ -2,7 +2,7 @@ import {
   unlink
 } from 'node:fs/promises'
 import {
-  STATUS_PATH
+  STATUS_DIRECTORY_PATH
 } from '#config'
 import toStatusFilePath from '#utils/to-status-file-path'
 import handleFilePathError from '#utils/handle-file-path-error'
@@ -39,7 +39,7 @@ export default async function remove (institutions) {
       }
 
       try {
-        await unlink(toStatusFilePath(STATUS_PATH, institutionId))
+        await unlink(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId))
       } catch (e) {
         handleFilePathError(e)
       }

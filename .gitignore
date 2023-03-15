@@ -18,3 +18,4 @@
 # Vars
 .env
 !/tests/.env
+!.env.default

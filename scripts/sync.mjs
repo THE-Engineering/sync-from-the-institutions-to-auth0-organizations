@@ -11,11 +11,7 @@ import {
   THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT
 } from '#config'
 import sleepFor from '#utils/sleep-for'
-import {
-  getHeapUsed,
-  toMB,
-  toPlaces
-} from '#utils/memory-usage'
+import memoryStats from '#utils/memory-stats'
 import {
   readInstitutionsFromFilePath,
   readInstitutionsFromEndpoint,
@@ -48,9 +44,11 @@ async function run () {
   await app()
 
   if (args.has('NAP')) {
-    const nap = Number(args.get('NAP'))
+    const nap = args.get('NAP')
 
-    console.log(`😴 "I'm just resting my eyes until ${(new Date(Date.now() + nap)).toLocaleTimeString()}" (${toPlaces(toMB(getHeapUsed()), 2)} MB)`)
+    console.log(`😴 "I'm just resting my eyes until ${(new Date(Date.now() + nap)).toLocaleTimeString()}"`)
+
+    memoryStats()
 
     await sleepFor(nap)
     setImmediate(run)

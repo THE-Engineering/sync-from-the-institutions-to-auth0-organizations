@@ -1,5 +1,5 @@
 import {
-  STATUS_PATH
+  STATUS_DIRECTORY_PATH
 } from '#config'
 import toStatusFromError from '#utils/to-status-from-error'
 import toStatusFilePath from '#utils/to-status-file-path'
@@ -33,7 +33,7 @@ export default async function removeOrganizations (organizations) {
       organizations.push(organization)
     }
 
-    await writeStatusToFilePath(toStatusFilePath(STATUS_PATH, name), status)
+    await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, name), status)
 
     await sleepFor(DURATION)
   }

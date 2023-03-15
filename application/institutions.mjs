@@ -13,8 +13,8 @@ import {
   ensureDir
 } from 'fs-extra'
 import {
-  DEFAULT_THE_INSTITUTIONS_ENDPOINT_LIMIT,
-  DEFAULT_THE_INSTITUTIONS_ENDPOINT_COUNT
+  THE_INSTITUTIONS_ENDPOINT_LIMIT,
+  THE_INSTITUTIONS_ENDPOINT_COUNT
 } from '#config'
 import handleFilePathError from '#utils/handle-file-path-error'
 import {
@@ -31,8 +31,8 @@ export function getRows ({ rows = [] } = {}) {
 
 export async function readInstitutionsFromEndpoint (
   endpoint,
-  limit = DEFAULT_THE_INSTITUTIONS_ENDPOINT_LIMIT,
-  count = DEFAULT_THE_INSTITUTIONS_ENDPOINT_COUNT,
+  limit = THE_INSTITUTIONS_ENDPOINT_LIMIT,
+  count = THE_INSTITUTIONS_ENDPOINT_COUNT,
   accumulator = {}
 ) {
   /**

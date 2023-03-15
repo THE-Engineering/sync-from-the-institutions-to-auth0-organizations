@@ -1,5 +1,5 @@
 import {
-  STATUS_PATH
+  STATUS_DIRECTORY_PATH
 } from '#config'
 import toStatusFromError from '#utils/to-status-from-error'
 import toStatusFilePath from '#utils/to-status-file-path'
@@ -50,7 +50,7 @@ export default async function changeOrganizations (institutions, organizations) 
           institutions.push(institution)
         }
 
-        await writeStatusToFilePath(toStatusFilePath(STATUS_PATH, institutionId), status)
+        await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
       }
     } else {
       let status
@@ -62,7 +62,7 @@ export default async function changeOrganizations (institutions, organizations) 
         institutions.push(institution)
       }
 
-      await writeStatusToFilePath(toStatusFilePath(STATUS_PATH, institutionId), status)
+      await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
     }
 
     await sleepFor(DURATION)

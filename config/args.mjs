@@ -5,7 +5,34 @@ import nconf from 'nconf'
  *
  *    new Map(Object.entries(Object.assign({}, yargsParser(process.argv), process.env)))
  *
- *  But in that case we may as well use `nconf`
+ *  But we may as well just use `nconf`
  */
 
-export default new Map(Object.entries(nconf.argv().env().get()))
+function transform ({ key, value }) {
+  if (
+    key === 'heap-statistics' ||
+    key === 'heap-total' ||
+    key === 'heap-used' ||
+    key === 'heap-percent') {
+    return {
+      key,
+      value: String(value) === 'true'
+    }
+  }
+
+  if (key === 'NAP') {
+    return {
+      key,
+      value: Number(value)
+    }
+  }
+
+  return {
+    key,
+    value
+  }
+}
+
+const args = nconf.argv({ transform }).env({ transform }).get()
+
+export default new Map(Object.entries(args))
