@@ -62,7 +62,7 @@ jobs:
       - checkout
       - docker_login
       - build_docker_image:
-          image: indonesian-api
+          image: sync-institutions
 
 workflows:
   ci-workflow:
