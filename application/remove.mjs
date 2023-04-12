@@ -1,11 +1,9 @@
 import {
-  unlink
-} from 'node:fs/promises'
-import {
   STATUS_DIRECTORY_PATH
 } from '#config'
+import toStatusFromError from '#utils/to-status-from-error'
 import toStatusFilePath from '#utils/to-status-file-path'
-import handleFilePathError from '#utils/handle-file-path-error'
+import writeStatusToFilePath from '#utils/write-status-to-file-path'
 import sleepFor, {
   ONE_SECOND,
   QUARTER_SECOND
@@ -32,17 +30,16 @@ export default async function remove (institutions) {
     if (getStatusCode(organization) !== 404) {
       const organizationId = getOrganizationId(organization)
 
+      let status
       try {
-        await deleteOrganizationById(organizationId)
-      } catch {
+        status = await deleteOrganizationById(organizationId)
+      } catch (e) {
+        status = toStatusFromError(e)
+
         institutions.push(institution)
       }
 
-      try {
-        await unlink(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId))
-      } catch (e) {
-        handleFilePathError(e)
-      }
+      await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
     }
 
     await sleepFor(DURATION)
