@@ -16,19 +16,19 @@ A [programmatic token requires more configuration](https://auth0.com/docs/secure
 
 Enter a _Name_, click to select _Machine to Machine Applications_ and click _Create_
 
-![Create a machine to machine app in Auth0](docs/1-create-machine-to-machine-app.png)
+![Create a machine to machine app in Auth0](images/1-create-machine-to-machine-app.png)
 
 ### 2. Authorise the application for the Management API
 
 Select _Management API_ and click _Authorize_
 
-![Authorise the app for the Management API](docs/2-authorise-machine-to-machine-app.png)
+![Authorise the app for the Management API](images/2-authorise-machine-to-machine-app.png)
 
 ### 3. Authorise the application with permsissions
 
 Filter by _organizations_ and click to select each of `read:organizations` `update:organizations` `create:organizations` `delete:organizations` then click _Authorize_
 
-![Filter to select the permissions](docs/3-authorise-machine-to-machine-app.png)
+![Filter to select the permissions](images/3-authorise-machine-to-machine-app.png)
 
 ### 4. Application details
 
@@ -76,7 +76,7 @@ You need
 
 For both of these values log in to the [Auth0 management dashboard](https://manage.auth0.com/). Under _Applications_, then _APIs_, find a link to the _Auth0 Management API_
 
-![A link to the Auth0 Management API](docs/auth0-management-api.png)
+![A link to the Auth0 Management API](images/auth0-management-api.png)
 
 Here you will find the _Audience_ value which you can copy to your clipboard (in the image it is redacted)
 
