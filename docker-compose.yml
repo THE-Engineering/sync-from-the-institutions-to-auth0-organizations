@@ -8,6 +8,3 @@ services:
     env_file: .env
     volumes:
       - './:/app'
-    command: >
-      sh -c "echo \"update-notifier=false\" > .npmrc && \
-      npm run sync"
