@@ -6,9 +6,9 @@ Watches a THE reference data endpoint to syncronise with Auth0
 
 ### Start
 
-You can start with [a manual token](docs/sync.md#starting-with-a-manual-token) or [a programmatic token](docs/sync.md#starting-with-a-programmatic-token)
-
 - [Sync](docs/sync.md)
+
+You may start with either a [manual token](docs/sync.md#starting-with-a-manual-token) or a [programmatic token](docs/sync.md#starting-with-a-programmatic-token)
 
 ### Other tasks
 
