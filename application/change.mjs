@@ -26,11 +26,14 @@ export default async function change (institutions) {
   while (institutions.length) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
-    const organization = await getOrganizationByName(institutionId)
     const institutionName = getInstitutionName(institution)
+    const organization = await getOrganizationByName(institutionId)
+    const statusCode = getStatusCode(organization)
 
-    console.log(`👉 ${institutionId}`)
-    if (getStatusCode(organization) === 404) {
+    if (statusCode === 403) throw new Error('FORBIDDEN')
+
+    console.log(`👉 ${institutionId || '-'} "${(institutionName || '-').trim()}"`)
+    if (statusCode === 404) {
       let status
       try {
         status = await createOrganization({ name: institutionId, display_name: institutionName })
@@ -42,6 +45,9 @@ export default async function change (institutions) {
 
       await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
     } else {
+      const institutionId = getInstitutionId(institution)
+      const institutionName = getInstitutionName(institution)
+
       if (
         institutionName !== getOrganizationDisplayName(organization)) {
         const {

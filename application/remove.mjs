@@ -25,8 +25,11 @@ export default async function remove (institutions) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
     const organization = await getOrganizationByName(institutionId)
+    const statusCode = getStatusCode(organization)
 
-    console.log(`👉 ${institutionId}`)
+    if (statusCode === 403) throw new Error('FORBIDDEN')
+
+    console.log(`👉 ${institutionId || '-'}`)
     if (getStatusCode(organization) !== 404) {
       const organizationId = getOrganizationId(organization)
 
