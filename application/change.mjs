@@ -17,7 +17,8 @@ import {
   createOrganization,
   getOrganizationByName,
   updateOrganizationById,
-  getStatusCode
+  getStatusCode,
+  getMetadata
 } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
@@ -36,7 +37,7 @@ export default async function change (institutions) {
     if (statusCode === 404) {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: institutionName })
+        status = await createOrganization({ name: institutionId, display_name: institutionName, metadata: { institutionId } })
       } catch (e) {
         status = toStatusFromError(e)
 
@@ -47,9 +48,10 @@ export default async function change (institutions) {
     } else {
       const institutionId = getInstitutionId(institution)
       const institutionName = getInstitutionName(institution)
+      const organizationMetaData = getMetadata(organization)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization)) {
+        institutionName !== getOrganizationDisplayName(organization) || organizationMetaData === undefined) {
         const {
           id,
           ...rest
@@ -57,7 +59,7 @@ export default async function change (institutions) {
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { institutionId } })
         } catch (e) {
           status = toStatusFromError(e)
 
