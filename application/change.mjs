@@ -59,7 +59,7 @@ export default async function change (institutions) {
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { institutionId } })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { institutionId, ...metadata } })
         } catch (e) {
           status = toStatusFromError(e)
 
