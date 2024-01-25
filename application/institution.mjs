@@ -37,8 +37,9 @@ export function getMetadata ({
   }
 }
 
-export function createMetaData(institution) {
+export function createMetaData(institution, organizationMetaData) {
   return {
+    ...organizationMetaData ?? {},
     institutionId: getId(institution)
   }
 }

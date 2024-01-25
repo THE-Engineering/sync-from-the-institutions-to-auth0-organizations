@@ -35,8 +35,8 @@ export default async function changeOrganizations (institutions, organizations) 
     if (organizations.some(hasName)) {
       const organization = organizations.find(hasName)
       const institutionName = getInstitutionName(institution)
-      const targetInstitutionMetaData = createMetaData(institution)
       const organizationMetaData = getMetadata(organization)
+      const targetInstitutionMetaData = createMetaData(institution, organizationMetaData)
 
       if (
         institutionName !== getOrganizationDisplayName(organization) || hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)) {

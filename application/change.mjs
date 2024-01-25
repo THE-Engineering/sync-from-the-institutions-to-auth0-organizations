@@ -30,8 +30,9 @@ export default async function change (institutions) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
     const institutionName = getInstitutionName(institution)
-    const targetInstitutionMetaData = createMetaData(institution)
     const organization = await getOrganizationByName(institutionId)
+    const organizationMetaData = getMetadata(organization)
+    const targetInstitutionMetaData = createMetaData(institution, organizationMetaData)
     const statusCode = getStatusCode(organization)
 
     if (statusCode === 403) throw new Error('FORBIDDEN')
@@ -51,8 +52,8 @@ export default async function change (institutions) {
     } else {
       const institutionId = getInstitutionId(institution)
       const institutionName = getInstitutionName(institution)
-      const targetInstitutionMetaData = createMetaData(institution)
       const organizationMetaData = getMetadata(organization)
+      const targetInstitutionMetaData = createMetaData(institution, organizationMetaData)
 
       if (
         institutionName !== getOrganizationDisplayName(organization) || hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)) {
