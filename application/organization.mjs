@@ -1,4 +1,7 @@
 import {
+  isDeepStrictEqual
+} from 'node:util'
+import {
   AUTH0_DOMAIN
 } from '#config'
 import getHeaders from '#utils/get-headers'
@@ -58,16 +61,6 @@ export async function deleteOrganizationById (id) {
   })
 }
 
-export function compareMetaDataValue(organizationMetaData, propertyPath, valueToCheck) {
-  let currentObject = organizationMetaData
-  return propertyPath.split('.').every(key => {
-    if (currentObject === null || currentObject === undefined) {
-      return false;
-    }
-
-    currentObject = currentObject[key];
-
-    if(currentObject === valueToCheck) return true
-    return false;
-  });
+export function hasChangedMetaData(organizationMetaData, targetMetaData) {
+  return !isDeepStrictEqual(organizationMetaData, targetMetaData)
 }

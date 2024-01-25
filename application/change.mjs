@@ -10,7 +10,8 @@ import sleepFor, {
 } from '#utils/sleep-for'
 import {
   getId as getInstitutionId,
-  getName as getInstitutionName
+  getName as getInstitutionName,
+  createMetaData
 } from './institution.mjs'
 import {
   getDisplayName as getOrganizationDisplayName,
@@ -20,7 +21,7 @@ import {
   getStatusCode,
   getMetadata
 } from './organization.mjs'
-import { compareMetaDataValue } from './organization.mjs'
+import { hasChangedMetaData } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
@@ -29,6 +30,7 @@ export default async function change (institutions) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
     const institutionName = getInstitutionName(institution)
+    const targetInstitutionMetaData = createMetaData(institution)
     const organization = await getOrganizationByName(institutionId)
     const statusCode = getStatusCode(organization)
 
@@ -38,7 +40,7 @@ export default async function change (institutions) {
     if (statusCode === 404) {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: institutionName, metadata: { institutionId } })
+        status = await createOrganization({ name: institutionId, display_name: institutionName, metadata: targetInstitutionMetaData })
       } catch (e) {
         status = toStatusFromError(e)
 
@@ -49,10 +51,11 @@ export default async function change (institutions) {
     } else {
       const institutionId = getInstitutionId(institution)
       const institutionName = getInstitutionName(institution)
+      const targetInstitutionMetaData = createMetaData(institution)
       const organizationMetaData = getMetadata(organization)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization) || !compareMetaDataValue(organizationMetaData, 'institutionId', institutionId)) {
+        institutionName !== getOrganizationDisplayName(organization) || hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)) {
         const {
           id,
           ...rest
@@ -60,7 +63,7 @@ export default async function change (institutions) {
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { ...organization.metadata, institutionId } })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: targetInstitutionMetaData })
         } catch (e) {
           status = toStatusFromError(e)
 
