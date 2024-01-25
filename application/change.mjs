@@ -20,7 +20,7 @@ import {
   getStatusCode,
   getMetadata
 } from './organization.mjs'
-import { compareMetaData } from './organizations.mjs'
+import { compareMetaData } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 

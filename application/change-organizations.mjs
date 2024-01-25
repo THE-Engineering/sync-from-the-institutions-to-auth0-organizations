@@ -15,7 +15,8 @@ import {
 import {
   getDisplayName as getOrganizationDisplayName,
   createOrganization,
-  updateOrganizationById
+  updateOrganizationById,
+  compareMetaData
 } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
