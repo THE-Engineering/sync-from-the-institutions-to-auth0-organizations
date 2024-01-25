@@ -57,3 +57,17 @@ export async function deleteOrganizationById (id) {
     headers: await getHeaders()
   })
 }
+
+
+export function compareMetaData(organizationMetaData, propertyPath, valueToCheck) {
+  return propertyPath.split('.').every(key => {
+    if (organizationMetaData === null || organizationMetaData === undefined) {
+      return false;
+    }
+
+    organizationMetaData = organizationMetaData[key];
+
+    if(organizationMetaData === valueToCheck) return true
+    return false;
+  });
+}

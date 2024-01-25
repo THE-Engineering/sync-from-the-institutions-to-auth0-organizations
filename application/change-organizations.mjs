@@ -36,7 +36,7 @@ export default async function changeOrganizations (institutions, organizations) 
       const organizationMetaData = getMetadata(organization)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization) || organizationMetaData === undefined) {
+        institutionName !== getOrganizationDisplayName(organization) ||!compareMetaData(organizationMetaData, 'institutionId', institutionId)) {
         const {
           id,
           ...rest
