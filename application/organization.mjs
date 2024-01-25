@@ -58,16 +58,16 @@ export async function deleteOrganizationById (id) {
   })
 }
 
-
-export function compareMetaData(organizationMetaData, propertyPath, valueToCheck) {
+export function compareMetaDataValue(organizationMetaData, propertyPath, valueToCheck) {
+  let currentObject = organizationMetaData
   return propertyPath.split('.').every(key => {
-    if (organizationMetaData === null || organizationMetaData === undefined) {
+    if (currentObject === null || currentObject === undefined) {
       return false;
     }
 
-    organizationMetaData = organizationMetaData[key];
+    currentObject = currentObject[key];
 
-    if(organizationMetaData === valueToCheck) return true
+    if(currentObject === valueToCheck) return true
     return false;
   });
 }

@@ -20,7 +20,7 @@ import {
   getStatusCode,
   getMetadata
 } from './organization.mjs'
-import { compareMetaData } from './organization.mjs'
+import { compareMetaDataValue } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
@@ -52,7 +52,7 @@ export default async function change (institutions) {
       const organizationMetaData = getMetadata(organization)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization) || !compareMetaData(organizationMetaData, 'institutionId', institutionId)) {
+        institutionName !== getOrganizationDisplayName(organization) || !compareMetaDataValue(organizationMetaData, 'institutionId', institutionId)) {
         const {
           id,
           ...rest
@@ -60,7 +60,7 @@ export default async function change (institutions) {
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { ...metadata, institutionId } })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: { ...organization.metadata, institutionId } })
         } catch (e) {
           status = toStatusFromError(e)
 
