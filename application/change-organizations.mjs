@@ -10,12 +10,14 @@ import sleepFor, {
 } from '#utils/sleep-for'
 import {
   getId as getInstitutionId,
-  getName as getInstitutionName
+  getName as getInstitutionName,
+  createMetaData
 } from './institution.mjs'
 import {
   getDisplayName as getOrganizationDisplayName,
   createOrganization,
-  updateOrganizationById
+  updateOrganizationById,
+  hasChangedMetaData
 } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
@@ -33,9 +35,11 @@ export default async function changeOrganizations (institutions, organizations) 
     if (organizations.some(hasName)) {
       const organization = organizations.find(hasName)
       const institutionName = getInstitutionName(institution)
+      const organizationMetaData = getMetadata(organization)
+      const targetInstitutionMetaData = createMetaData(institution, organizationMetaData)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization)) {
+        institutionName !== getOrganizationDisplayName(organization) || hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)) {
         const {
           id,
           ...rest
@@ -43,7 +47,7 @@ export default async function changeOrganizations (institutions, organizations) 
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName })
+          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: targetInstitutionMetaData })
         } catch (e) {
           status = toStatusFromError(e)
 
@@ -55,7 +59,7 @@ export default async function changeOrganizations (institutions, organizations) 
     } else {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: getInstitutionName(institution) })
+        status = await createOrganization({ name: institutionId, display_name: getInstitutionName(institution), metadata: targetInstitutionMetaData })
       } catch (e) {
         status = toStatusFromError(e)
 

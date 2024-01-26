@@ -1,4 +1,7 @@
 import {
+  isDeepStrictEqual
+} from 'node:util'
+import {
   AUTH0_DOMAIN
 } from '#config'
 import getHeaders from '#utils/get-headers'
@@ -56,4 +59,8 @@ export async function deleteOrganizationById (id) {
     method: 'DELETE',
     headers: await getHeaders()
   })
+}
+
+export function hasChangedMetaData(organizationMetaData, targetMetaData) {
+  return !isDeepStrictEqual(organizationMetaData, targetMetaData)
 }

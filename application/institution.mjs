@@ -36,3 +36,10 @@ export function getMetadata ({
     ...(foundationYear ? { foundation_year: foundationYear } : {})
   }
 }
+
+export function createMetaData(institution, organizationMetaData) {
+  return {
+    ...organizationMetaData ?? {},
+    institutionId: getId(institution)
+  }
+}
