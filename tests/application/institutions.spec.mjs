@@ -809,7 +809,11 @@ describe('`#application/institutions`', () => {
 
     describe('Institutions are changed or removed or added', () => {
       const was = {
-        rows: [],
+        rows: [
+          { iid: 'A', name: 'A' },
+          { iid: 'B', name: 'B' },
+          { iid: 'C', name: 'C' },
+        ],
       };
       const now = {
         rows: [
