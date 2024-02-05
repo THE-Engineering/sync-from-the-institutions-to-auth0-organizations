@@ -1,4 +1,4 @@
-import nconf from 'nconf'
+import nconf from 'nconf';
 
 /**
  *  We could do this with `yargs-parser`
@@ -18,22 +18,22 @@ function transform({ key, value }) {
     return {
       key,
       value: String(value) === 'true',
-    }
+    };
   }
 
   if (key === 'NAP') {
     return {
       key,
       value: Number(value),
-    }
+    };
   }
 
   return {
     key,
     value,
-  }
+  };
 }
 
-const args = nconf.argv({ transform }).env({ transform }).get()
+const args = nconf.argv({ transform }).env({ transform }).get();
 
-export default new Map(Object.entries(args))
+export default new Map(Object.entries(args));

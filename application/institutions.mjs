@@ -1,17 +1,20 @@
-import { dirname } from 'node:path'
-import { readFile, writeFile, unlink } from 'node:fs/promises'
-import { isDeepStrictEqual } from 'node:util'
-import { ensureDir } from 'fs-extra'
-import { THE_INSTITUTIONS_ENDPOINT_LIMIT, THE_INSTITUTIONS_ENDPOINT_COUNT } from '#config'
-import handleFilePathError from '#utils/handle-file-path-error'
-import { getId as getInstitutionId } from './institution.mjs'
+import { dirname } from 'node:path';
+import { readFile, writeFile, unlink } from 'node:fs/promises';
+import { isDeepStrictEqual } from 'node:util';
+import { ensureDir } from 'fs-extra';
+import {
+  THE_INSTITUTIONS_ENDPOINT_LIMIT,
+  THE_INSTITUTIONS_ENDPOINT_COUNT,
+} from '#config';
+import handleFilePathError from '#utils/handle-file-path-error';
+import { getId as getInstitutionId } from './institution.mjs';
 
 export function getRowCount({ rowCount = 0 } = {}) {
-  return rowCount
+  return rowCount;
 }
 
 export function getRows({ rows = [] } = {}) {
-  return rows
+  return rows;
 }
 
 export async function readInstitutionsFromEndpoint(
@@ -25,135 +28,137 @@ export async function readInstitutionsFromEndpoint(
    *
    *  Changes to the reference data are expected to propagate in ~2hrs
    */
-  const url = new URL(endpoint)
+
+  console.log(endpoint);
+  const url = new URL(endpoint);
 
   url.search = new URLSearchParams({
     limit,
     ...(count ? { offset: count * limit } : {}),
-  })
+  });
 
-  const response = await fetch(url)
+  const response = await fetch(url);
 
-  const { rowCount, rows } = await response.json()
+  const { rowCount, rows } = await response.json();
 
   const institutions = {
     rowCount: getRowCount(accumulator) + rowCount,
     rows: getRows(accumulator).concat(rows),
-  }
+  };
 
   if (rowCount === limit) {
-    return readInstitutionsFromEndpoint(endpoint, limit, count + 1, institutions)
+    return readInstitutionsFromEndpoint(endpoint, limit, count + 1, institutions);
   }
 
-  return institutions
+  return institutions;
 }
 
 export async function readInstitutionsFromFilePath(filePath) {
   try {
-    await ensureDir(dirname(filePath))
-    const fileData = await readFile(filePath, 'utf8')
-    return JSON.parse(fileData.toString())
+    await ensureDir(dirname(filePath));
+    const fileData = await readFile(filePath, 'utf8');
+    return JSON.parse(fileData.toString());
   } catch (e) {
-    handleFilePathError(e)
+    handleFilePathError(e);
   }
 }
 
 export async function writeInstitutionsToFilePath(filePath, institutions = {}) {
   try {
-    await ensureDir(dirname(filePath))
-    const fileData = JSON.stringify(institutions, null, 2)
-    await writeFile(filePath, fileData, 'utf8')
+    await ensureDir(dirname(filePath));
+    const fileData = JSON.stringify(institutions, null, 2);
+    await writeFile(filePath, fileData, 'utf8');
   } catch (e) {
-    handleFilePathError(e)
+    handleFilePathError(e);
   }
 }
 
 export async function deleteInstitutionsFromFilePath(filePath) {
   try {
-    await unlink(filePath)
+    await unlink(filePath);
   } catch (e) {
-    handleFilePathError(e)
+    handleFilePathError(e);
   }
 }
 
 export function getChangedInstitutions(alpha = {}, omega = {}) {
   return getRows(alpha).reduce((accumulator, institutionAlpha) => {
-    const institutionId = getInstitutionId(institutionAlpha)
+    const institutionId = getInstitutionId(institutionAlpha);
 
     function hasInstitutionId(institution) {
-      return getInstitutionId(institution) === institutionId
+      return getInstitutionId(institution) === institutionId;
     }
 
     if (getRows(omega).some(hasInstitutionId)) {
-      const institutionOmega = getRows(omega).find(hasInstitutionId)
+      const institutionOmega = getRows(omega).find(hasInstitutionId);
 
       return isDeepStrictEqual(institutionAlpha, institutionOmega)
         ? accumulator
-        : accumulator.concat(institutionOmega)
+        : accumulator.concat(institutionOmega);
     }
 
-    return accumulator
-  }, [])
+    return accumulator;
+  }, []);
 }
 
 export function hasChangedInstitutions(alpha = {}, omega = {}) {
   return !getRows(alpha).every((institutionAlpha) => {
-    const institutionId = getInstitutionId(institutionAlpha)
+    const institutionId = getInstitutionId(institutionAlpha);
 
     function hasInstitutionId(institution) {
-      return getInstitutionId(institution) === institutionId
+      return getInstitutionId(institution) === institutionId;
     }
 
     if (getRows(omega).some(hasInstitutionId)) {
-      const institutionOmega = getRows(omega).find(hasInstitutionId)
+      const institutionOmega = getRows(omega).find(hasInstitutionId);
 
-      return isDeepStrictEqual(institutionAlpha, institutionOmega)
+      return isDeepStrictEqual(institutionAlpha, institutionOmega);
     }
 
-    return true
-  })
+    return true;
+  });
 }
 
 export function getRemovedInstitutions(alpha = {}, omega = {}) {
   return getRows(alpha).reduce((accumulator, institution) => {
-    const institutionId = getInstitutionId(institution)
+    const institutionId = getInstitutionId(institution);
 
     return getRows(omega).some(
       (institution) => getInstitutionId(institution) === institutionId,
     )
       ? accumulator
-      : accumulator.concat(institution)
-  }, [])
+      : accumulator.concat(institution);
+  }, []);
 }
 
 export function hasRemovedInstitutions(alpha = {}, omega = {}) {
   return !getRows(alpha).every((institution) => {
-    const institutionId = getInstitutionId(institution)
+    const institutionId = getInstitutionId(institution);
 
     return getRows(omega).some(
       (institution) => getInstitutionId(institution) === institutionId,
-    )
-  })
+    );
+  });
 }
 
 export function getAddedInstitutions(alpha = {}, omega = {}) {
   return getRows(omega).reduce((accumulator, institution) => {
-    const institutionId = getInstitutionId(institution)
+    const institutionId = getInstitutionId(institution);
 
     return getRows(alpha).some(
       (institution) => getInstitutionId(institution) === institutionId,
     )
       ? accumulator
-      : accumulator.concat(institution)
-  }, [])
+      : accumulator.concat(institution);
+  }, []);
 }
 
 export function hasAddedInstitutions(alpha = {}, omega = {}) {
   return !getRows(omega).every((institution) => {
-    const institutionId = getInstitutionId(institution)
+    const institutionId = getInstitutionId(institution);
 
     return getRows(alpha).some(
       (institution) => getInstitutionId(institution) === institutionId,
-    )
-  })
+    );
+  });
 }

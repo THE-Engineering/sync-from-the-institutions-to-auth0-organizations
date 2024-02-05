@@ -3,17 +3,17 @@ import {
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
   AUTH0_AUDIENCE,
-} from '#config'
+} from '#config';
 
-let AUTHORIZATION = {}
-let AUTHORIZED_AT = 0
+let AUTHORIZATION = {};
+let AUTHORIZED_AT = 0;
 
 function isExpired({ expires_in: expiresIn = 0 } = {}) {
   /*
    *  `expiresIn` is a number of SECONDS
    *  `authorisedAt` is a number representing a date in MILLISECONDS
    */
-  return AUTHORIZED_AT + expiresIn * 1000 < Date.now()
+  return AUTHORIZED_AT + expiresIn * 1000 < Date.now();
 }
 
 function isAuthorized({ access_token: accessToken } = {}) {
@@ -21,7 +21,7 @@ function isAuthorized({ access_token: accessToken } = {}) {
    *  `accessToken` is a required field in the authorisation response
    *  so its absence means we are not authorised and should halt
    */
-  return Boolean(accessToken)
+  return Boolean(accessToken);
 }
 
 // https://auth0.com/docs/secure/tokens/access-tokens/get-management-api-access-tokens-for-production
@@ -37,23 +37,23 @@ async function getAuthorizationFromResource() {
       audience: AUTH0_AUDIENCE,
       grant_type: 'client_credentials',
     }),
-  })
+  });
 
-  return await response.json()
+  return await response.json();
 }
 
 async function getAuthorization() {
   if (isExpired(AUTHORIZATION)) {
-    AUTHORIZATION = await getAuthorizationFromResource()
-    if (!isAuthorized(AUTHORIZATION)) throw new Error('NOT_AUTHORIZED')
-    AUTHORIZED_AT = Date.now()
+    AUTHORIZATION = await getAuthorizationFromResource();
+    if (!isAuthorized(AUTHORIZATION)) throw new Error('NOT_AUTHORIZED');
+    AUTHORIZED_AT = Date.now();
   }
 
-  return AUTHORIZATION
+  return AUTHORIZATION;
 }
 
 export default async function getAccessToken() {
-  const { access_token: accessToken } = await getAuthorization()
+  const { access_token: accessToken } = await getAuthorization();
 
-  return accessToken
+  return accessToken;
 }

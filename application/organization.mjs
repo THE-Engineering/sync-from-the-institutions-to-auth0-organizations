@@ -1,25 +1,25 @@
-import { isDeepStrictEqual } from 'node:util'
-import { AUTH0_DOMAIN } from '#config'
-import getHeaders from '#utils/get-headers'
+import { isDeepStrictEqual } from 'node:util';
+import { AUTH0_DOMAIN } from '#config';
+import getHeaders from '#utils/get-headers';
 
 export function getId({ id }) {
-  return id
+  return id;
 }
 
 export function getName({ name }) {
-  return name
+  return name;
 }
 
 export function getDisplayName({ display_name: displayName }) {
-  return displayName
+  return displayName;
 }
 
 export function getMetadata({ metadata }) {
-  return metadata
+  return metadata;
 }
 
 export function getStatusCode({ statusCode }) {
-  return statusCode
+  return statusCode;
 }
 
 export async function createOrganization(organization) {
@@ -27,9 +27,9 @@ export async function createOrganization(organization) {
     method: 'POST',
     headers: await getHeaders(),
     body: JSON.stringify(organization),
-  })
+  });
 
-  return response.json()
+  return response.json();
 }
 
 export async function getOrganizationByName(name) {
@@ -38,9 +38,9 @@ export async function getOrganizationByName(name) {
     {
       headers: await getHeaders(),
     },
-  )
+  );
 
-  return response.json()
+  return response.json();
 }
 
 export async function updateOrganizationById(id, organization) {
@@ -48,18 +48,18 @@ export async function updateOrganizationById(id, organization) {
     method: 'PATCH',
     headers: await getHeaders(),
     body: JSON.stringify(organization),
-  })
+  });
 
-  return response.json()
+  return response.json();
 }
 
 export async function deleteOrganizationById(id) {
   return fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
     method: 'DELETE',
     headers: await getHeaders(),
-  })
+  });
 }
 
 export function hasChangedMetaData(organizationMetaData, targetMetaData) {
-  return !isDeepStrictEqual(organizationMetaData, targetMetaData)
+  return !isDeepStrictEqual(organizationMetaData, targetMetaData);
 }

@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
-import { THE_INSTITUTIONS_FILE_PATH as FILE_PATH } from '#config'
-import { getOrganizations } from '#application/organizations'
-import { deleteInstitutionsFromFilePath } from '#application/institutions'
-import removeOrganizations from '#application/remove-organizations'
+import { THE_INSTITUTIONS_FILE_PATH as FILE_PATH } from '#config';
+import { getOrganizations } from '#application/organizations';
+import { deleteInstitutionsFromFilePath } from '#application/institutions';
+import removeOrganizations from '#application/remove-organizations';
 
 async function app() {
-  console.log('🚀')
+  console.log('🚀');
 
-  const ORGANIZATIONS = await getOrganizations()
+  const ORGANIZATIONS = await getOrganizations();
 
-  await removeOrganizations(ORGANIZATIONS)
+  await removeOrganizations(ORGANIZATIONS);
 
-  await deleteInstitutionsFromFilePath(FILE_PATH)
+  await deleteInstitutionsFromFilePath(FILE_PATH);
 
-  console.log('👍')
+  console.log('👍');
 }
 
-const { pid } = process
+const { pid } = process;
 
-console.log(`🫡 in process ${pid}`)
+console.log(`🫡 in process ${pid}`);
 
-export default app()
+export default app();

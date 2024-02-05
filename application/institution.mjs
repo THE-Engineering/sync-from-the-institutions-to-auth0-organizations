@@ -1,9 +1,9 @@
 export function getId({ iid }) {
-  return iid
+  return iid;
 }
 
 export function getName({ name }) {
-  return name
+  return name;
 }
 
 export function getMetadata({
@@ -34,12 +34,12 @@ export function getMetadata({
     ...(address ? { address } : {}),
     ...(phone ? { phone } : {}),
     ...(foundationYear ? { foundation_year: foundationYear } : {}),
-  }
+  };
 }
 
 export function createMetaData(institution, organizationMetaData) {
   return {
     ...(organizationMetaData ?? {}),
     institutionId: getId(institution),
-  }
+  };
 }

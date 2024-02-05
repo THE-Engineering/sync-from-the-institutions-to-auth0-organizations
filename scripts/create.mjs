@@ -5,28 +5,28 @@ import {
   THE_INSTITUTIONS_ENDPOINT as ENDPOINT,
   THE_INSTITUTIONS_ENDPOINT_LIMIT as LIMIT,
   THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT,
-} from '#config'
+} from '#config';
 import {
   getRows,
   readInstitutionsFromEndpoint,
   writeInstitutionsToFilePath,
-} from '#application/institutions'
-import change from '#application/change'
+} from '#application/institutions';
+import change from '#application/change';
 
 async function app() {
-  console.log('🚀')
+  console.log('🚀');
 
-  const INSTITUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
+  const INSTITUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT);
 
-  await change([...getRows(INSTITUTIONS)]) // duplicate the array
+  await change([...getRows(INSTITUTIONS)]); // duplicate the array
 
-  await writeInstitutionsToFilePath(FILE_PATH, INSTITUTIONS)
+  await writeInstitutionsToFilePath(FILE_PATH, INSTITUTIONS);
 
-  console.log('👍')
+  console.log('👍');
 }
 
-const { pid } = process
+const { pid } = process;
 
-console.log(`🫡 in process ${pid}`)
+console.log(`🫡 in process ${pid}`);
 
-export default app()
+export default app();
