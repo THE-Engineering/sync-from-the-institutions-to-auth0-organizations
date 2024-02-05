@@ -25,7 +25,7 @@
     "remove": "node scripts/remove.mjs",
     "validate": "node scripts/validate.mjs",
     "sync": "node scripts/sync.mjs",
-    "prepare": "husky && husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "fs-extra": "^11.1.1",
