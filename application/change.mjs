@@ -20,9 +20,6 @@ import {
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
-
-
-
 export default async function change(institutions) {
   while (institutions.length) {
     const institution = institutions.shift()

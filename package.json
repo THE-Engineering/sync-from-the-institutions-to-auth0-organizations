@@ -62,7 +62,7 @@
     "*.{mjs,cjs}": [
       "prettier --write",
       "eslint --cache --fix --max-warnings=0",
-      "jest --findRelatedTests --passWithNoTests"
+      "npm run test"
     ]
   }
 }

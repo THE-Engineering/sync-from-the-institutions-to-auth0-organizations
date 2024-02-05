@@ -21,3 +21,4 @@
 !.env.default
 
 /.idea
+/.eslintcache
