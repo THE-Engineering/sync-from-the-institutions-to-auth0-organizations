@@ -15,10 +15,8 @@ export const TWO_DAYS = ONE_DAY * 2
 export const HALF_DAY = ONE_DAY / 2
 export const QUARTER_DAY = HALF_DAY / 2
 
-export default function sleepFor (duration = ONE_MINUTE) {
-  return (
-    new Promise((resolve) => {
-      setTimeout(resolve, duration)
-    })
-  )
+export default function sleepFor(duration = ONE_MINUTE) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, duration)
+  })
 }

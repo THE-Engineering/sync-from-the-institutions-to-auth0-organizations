@@ -1,17 +1,12 @@
-import {
-  STATUS_DIRECTORY_PATH
-} from '#config'
+import { STATUS_DIRECTORY_PATH } from '#config'
 import toStatusFilePath from '#utils/to-status-file-path'
 import toStatusFromError from '#utils/to-status-from-error'
 import writeStatusToFilePath from '#utils/write-status-to-file-path'
-import sleepFor, {
-  ONE_SECOND,
-  QUARTER_SECOND
-} from '#utils/sleep-for'
+import sleepFor, { ONE_SECOND, QUARTER_SECOND } from '#utils/sleep-for'
 import {
   getId as getInstitutionId,
   getName as getInstitutionName,
-  createMetaData
+  createMetaData,
 } from './institution.mjs'
 import {
   getDisplayName as getOrganizationDisplayName,
@@ -19,13 +14,13 @@ import {
   getOrganizationByName,
   updateOrganizationById,
   getStatusCode,
-  getMetadata
+  getMetadata,
 } from './organization.mjs'
 import { hasChangedMetaData } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
-export default async function change (institutions) {
+export default async function change(institutions) {
   while (institutions.length) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
@@ -41,14 +36,21 @@ export default async function change (institutions) {
     if (statusCode === 404) {
       let status
       try {
-        status = await createOrganization({ name: institutionId, display_name: institutionName, metadata: targetInstitutionMetaData })
+        status = await createOrganization({
+          name: institutionId,
+          display_name: institutionName,
+          metadata: targetInstitutionMetaData,
+        })
       } catch (e) {
         status = toStatusFromError(e)
 
         institutions.push(institution)
       }
 
-      await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
+      await writeStatusToFilePath(
+        toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId),
+        status,
+      )
     } else {
       const institutionId = getInstitutionId(institution)
       const institutionName = getInstitutionName(institution)
@@ -56,22 +58,29 @@ export default async function change (institutions) {
       const targetInstitutionMetaData = createMetaData(institution, organizationMetaData)
 
       if (
-        institutionName !== getOrganizationDisplayName(organization) || hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)) {
-        const {
-          id,
-          ...rest
-        } = organization
+        institutionName !== getOrganizationDisplayName(organization) ||
+        hasChangedMetaData(organizationMetaData, targetInstitutionMetaData)
+      ) {
+        const { id, ...rest } = organization
 
         let status
         try {
-          status = await updateOrganizationById(id, { ...rest, name: institutionId, display_name: institutionName, metadata: targetInstitutionMetaData })
+          status = await updateOrganizationById(id, {
+            ...rest,
+            name: institutionId,
+            display_name: institutionName,
+            metadata: targetInstitutionMetaData,
+          })
         } catch (e) {
           status = toStatusFromError(e)
 
           institutions.push(institution)
         }
 
-        await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
+        await writeStatusToFilePath(
+          toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId),
+          status,
+        )
       }
     }
 

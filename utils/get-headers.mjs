@@ -1,12 +1,10 @@
-import {
-  AUTH0_ACCESS_TOKEN
-} from '#config'
+import { AUTH0_ACCESS_TOKEN } from '#config'
 import getAccessToken from './get-access-token.mjs'
 
-export default async function getHeaders () {
+export default async function getHeaders() {
   return {
-    Authorization: `Bearer ${AUTH0_ACCESS_TOKEN || await getAccessToken()}`,
+    Authorization: `Bearer ${AUTH0_ACCESS_TOKEN || (await getAccessToken())}`,
     'Cache-Control': 'no-cache',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   }
 }

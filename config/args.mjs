@@ -8,28 +8,33 @@ import nconf from 'nconf'
  *  But we may as well just use `nconf`
  */
 
-function transform ({ key, value }) {
+
+
+
+
+function transform({ key, value }) {
   if (
     key === 'heap-statistics' ||
     key === 'heap-total' ||
     key === 'heap-used' ||
-    key === 'heap-percent') {
+    key === 'heap-percent'
+  ) {
     return {
       key,
-      value: String(value) === 'true'
+      value: String(value) === 'true',
     }
   }
 
   if (key === 'NAP') {
     return {
       key,
-      value: Number(value)
+      value: Number(value),
     }
   }
 
   return {
     key,
-    value
+    value,
   }
 }
 

@@ -4,16 +4,16 @@ import {
   THE_INSTITUTIONS_FILE_PATH as FILE_PATH,
   THE_INSTITUTIONS_ENDPOINT as ENDPOINT,
   THE_INSTITUTIONS_ENDPOINT_LIMIT as LIMIT,
-  THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT
+  THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT,
 } from '#config'
 import {
   getRows,
   readInstitutionsFromEndpoint,
-  writeInstitutionsToFilePath
+  writeInstitutionsToFilePath,
 } from '#application/institutions'
 import change from '#application/change'
 
-async function app () {
+async function app() {
   console.log('🚀')
 
   const INSTITUTIONS = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT)
@@ -25,9 +25,7 @@ async function app () {
   console.log('👍')
 }
 
-const {
-  pid
-} = process
+const { pid } = process
 
 console.log(`🫡 in process ${pid}`)
 

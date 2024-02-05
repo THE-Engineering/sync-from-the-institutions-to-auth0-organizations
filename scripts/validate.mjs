@@ -1,17 +1,11 @@
 #!/usr/bin/env node
 
-import {
-  THE_INSTITUTIONS_FILE_PATH as FILE_PATH
-} from '#config'
-import {
-  getOrganizations
-} from '#application/organizations'
-import {
-  readInstitutionsFromFilePath
-} from '#application/institutions'
+import { THE_INSTITUTIONS_FILE_PATH as FILE_PATH } from '#config'
+import { getOrganizations } from '#application/organizations'
+import { readInstitutionsFromFilePath } from '#application/institutions'
 import validate from '#application/validate'
 
-async function app () {
+async function app() {
   console.log('🚀')
 
   const organizations = await getOrganizations()
@@ -24,9 +18,7 @@ async function app () {
   return isValid
 }
 
-const {
-  pid
-} = process
+const { pid } = process
 
 console.log(`🫡 in process ${pid}`)
 

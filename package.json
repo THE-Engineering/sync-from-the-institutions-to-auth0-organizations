@@ -19,6 +19,7 @@
   "scripts": {
     "lint": "eslint . --ext .mjs --ext .cjs",
     "lint:fix": "npm run lint -- --fix",
+    "format": "prettier \"**/*\" --write --ignore-unknown",
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=tests/.env mocha tests -r dotenv/config --recursive --verbose --color",
     "create": "node scripts/create.mjs",
     "remove": "node scripts/remove.mjs",
@@ -44,7 +45,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.3",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "prettier": "3.2.5"
   },
   "imports": {
     "#application/*": "./application/*.mjs",

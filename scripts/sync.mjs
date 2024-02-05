@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-import {
-  isDeepStrictEqual
-} from 'node:util'
+import { isDeepStrictEqual } from 'node:util'
 import args from '#config/args'
 import {
   THE_INSTITUTIONS_FILE_PATH as FILE_PATH,
   THE_INSTITUTIONS_ENDPOINT as ENDPOINT,
   THE_INSTITUTIONS_ENDPOINT_LIMIT as LIMIT,
-  THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT
+  THE_INSTITUTIONS_ENDPOINT_COUNT as COUNT,
 } from '#config'
 import sleepFor from '#utils/sleep-for'
 import memoryStats from '#utils/memory-stats'
@@ -18,12 +16,12 @@ import {
   writeInstitutionsToFilePath,
   getChangedInstitutions,
   getRemovedInstitutions,
-  getAddedInstitutions
+  getAddedInstitutions,
 } from '#application/institutions'
 import change from '#application/change'
 import remove from '#application/remove'
 
-async function app () {
+async function app() {
   console.log('🚀')
 
   const was = await readInstitutionsFromFilePath(FILE_PATH)
@@ -38,7 +36,7 @@ async function app () {
   }
 }
 
-async function run () {
+async function run() {
   if ('gc' in global) gc()
 
   await app()
@@ -46,7 +44,9 @@ async function run () {
   if (args.has('NAP')) {
     const nap = args.get('NAP')
 
-    console.log(`😴 "I'm just resting my eyes until ${(new Date(Date.now() + nap)).toLocaleTimeString()}"`)
+    console.log(
+      `😴 "I'm just resting my eyes until ${new Date(Date.now() + nap).toLocaleTimeString()}"`,
+    )
 
     memoryStats()
 
@@ -55,9 +55,7 @@ async function run () {
   }
 }
 
-const {
-  pid
-} = process
+const { pid } = process
 
 console.log(`🫡 in process ${pid}`)
 

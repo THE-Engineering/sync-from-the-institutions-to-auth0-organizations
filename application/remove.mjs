@@ -1,26 +1,19 @@
-import {
-  STATUS_DIRECTORY_PATH
-} from '#config'
+import { STATUS_DIRECTORY_PATH } from '#config'
 import toStatusFromError from '#utils/to-status-from-error'
 import toStatusFilePath from '#utils/to-status-file-path'
 import writeStatusToFilePath from '#utils/write-status-to-file-path'
-import sleepFor, {
-  ONE_SECOND,
-  QUARTER_SECOND
-} from '#utils/sleep-for'
-import {
-  getId as getInstitutionId
-} from './institution.mjs'
+import sleepFor, { ONE_SECOND, QUARTER_SECOND } from '#utils/sleep-for'
+import { getId as getInstitutionId } from './institution.mjs'
 import {
   getId as getOrganizationId,
   getOrganizationByName,
   deleteOrganizationById,
-  getStatusCode
+  getStatusCode,
 } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
-export default async function remove (institutions) {
+export default async function remove(institutions) {
   while (institutions.length) {
     const institution = institutions.shift()
     const institutionId = getInstitutionId(institution)
@@ -42,7 +35,10 @@ export default async function remove (institutions) {
         institutions.push(institution)
       }
 
-      await writeStatusToFilePath(toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId), status)
+      await writeStatusToFilePath(
+        toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId),
+        status,
+      )
     }
 
     await sleepFor(DURATION)

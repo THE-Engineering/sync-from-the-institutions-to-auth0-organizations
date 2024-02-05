@@ -4,10 +4,10 @@ import {
   getHeapStatisticsMB,
   getHeapTotalMB,
   getHeapUsedMB,
-  getHeapSpacePercent
+  getHeapSpacePercent,
 } from './memory-usage.mjs'
 
-export default function memoryStats () {
+export default function memoryStats() {
   const decimalPlaces = args.get('MEMORY_STATS_DECIMAL_PLACES')
 
   if (args.get('heap-statistics')) console.table(getHeapStatisticsMB(decimalPlaces))
