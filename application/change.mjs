@@ -15,8 +15,8 @@ import {
   updateOrganizationById,
   getStatusCode,
   getMetadata,
+  hasChangedMetaData,
 } from './organization.mjs'
-import { hasChangedMetaData } from './organization.mjs'
 
 const DURATION = ONE_SECOND + QUARTER_SECOND
 
