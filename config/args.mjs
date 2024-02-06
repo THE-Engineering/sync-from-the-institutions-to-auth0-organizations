@@ -1,4 +1,4 @@
-import nconf from 'nconf'
+import nconf from 'nconf';
 
 /**
  *  We could do this with `yargs-parser`
@@ -8,31 +8,32 @@ import nconf from 'nconf'
  *  But we may as well just use `nconf`
  */
 
-function transform ({ key, value }) {
+function transform({ key, value }) {
   if (
     key === 'heap-statistics' ||
     key === 'heap-total' ||
     key === 'heap-used' ||
-    key === 'heap-percent') {
+    key === 'heap-percent'
+  ) {
     return {
       key,
-      value: String(value) === 'true'
-    }
+      value: String(value) === 'true',
+    };
   }
 
   if (key === 'NAP') {
     return {
       key,
-      value: Number(value)
-    }
+      value: Number(value),
+    };
   }
 
   return {
     key,
-    value
-  }
+    value,
+  };
 }
 
-const args = nconf.argv({ transform }).env({ transform }).get()
+const args = nconf.argv({ transform }).env({ transform }).get();
 
-export default new Map(Object.entries(args))
+export default new Map(Object.entries(args));

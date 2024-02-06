@@ -1,12 +1,12 @@
-export function getId ({ iid }) {
-  return iid
+export function getId({ iid }) {
+  return iid;
 }
 
-export function getName ({ name }) {
-  return name
+export function getName({ name }) {
+  return name;
 }
 
-export function getMetadata ({
+export function getMetadata({
   web,
   latitude,
   longitude,
@@ -16,7 +16,7 @@ export function getMetadata ({
   continent,
   address,
   phone,
-  foundation_year: foundationYear
+  foundation_year: foundationYear,
 }) {
   /**
    *  `metadata` allows for a maximum of 10 fields and does not like zero-length values
@@ -33,13 +33,13 @@ export function getMetadata ({
     ...(continent ? { continent } : {}),
     ...(address ? { address } : {}),
     ...(phone ? { phone } : {}),
-    ...(foundationYear ? { foundation_year: foundationYear } : {})
-  }
+    ...(foundationYear ? { foundation_year: foundationYear } : {}),
+  };
 }
 
 export function createMetaData(institution, organizationMetaData) {
   return {
-    ...organizationMetaData ?? {},
-    institutionId: getId(institution)
-  }
+    ...(organizationMetaData ?? {}),
+    institutionId: getId(institution),
+  };
 }

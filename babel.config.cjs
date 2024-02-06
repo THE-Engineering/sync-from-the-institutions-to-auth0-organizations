@@ -3,13 +3,14 @@ module.exports = {
   comments: false,
   presets: [
     [
-      '@babel/env', {
+      '@babel/env',
+      {
         targets: {
-          node: 'current'
+          node: 'current',
         },
         useBuiltIns: 'usage',
-        corejs: 3
-      }
-    ]
-  ]
-}
+        corejs: 3,
+      },
+    ],
+  ],
+};

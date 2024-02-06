@@ -19,3 +19,6 @@
 .env
 !/tests/.env
 !.env.default
+
+/.idea
+/.eslintcache

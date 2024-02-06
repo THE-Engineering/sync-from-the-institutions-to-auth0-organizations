@@ -19,11 +19,13 @@
   "scripts": {
     "lint": "eslint . --ext .mjs --ext .cjs",
     "lint:fix": "npm run lint -- --fix",
+    "format": "prettier \"**/*\" --write --ignore-unknown",
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=tests/.env mocha tests -r dotenv/config --recursive --verbose --color",
     "create": "node scripts/create.mjs",
     "remove": "node scripts/remove.mjs",
     "validate": "node scripts/validate.mjs",
-    "sync": "node scripts/sync.mjs"
+    "sync": "node scripts/sync.mjs",
+    "prepare": "test -d node_modules/husky && husky install || echo \"husky is not installed\""
   },
   "dependencies": {
     "fs-extra": "^11.1.1",
@@ -39,12 +41,15 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.38.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "husky": "^8.0.3",
-    "mocha": "^10.2.0"
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
+    "mocha": "^10.2.0",
+    "prettier": "3.2.5"
   },
   "imports": {
     "#application/*": "./application/*.mjs",
@@ -52,5 +57,11 @@
     "#config/*": "./config/*.mjs",
     "#utils": "./utils/index.mjs",
     "#utils/*": "./utils/*.mjs"
+  },
+  "lint-staged": {
+    "*.{mjs,cjs}": [
+      "prettier --write",
+      "eslint --cache --fix --max-warnings=0"
+    ]
   }
 }
