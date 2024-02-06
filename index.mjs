@@ -1,3 +1,5 @@
+export { default as changeOrganizations } from '#application/change-organizations';
+
 export { default as change } from '#application/change';
 
 export { default as remove } from '#application/remove';
