@@ -26,6 +26,25 @@ Otherwise
   --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>'
 ```
 
+#### With default connection
+
+Additional optional `CONNECTION_NAME` parameter is available to configure default connection.
+The connection will be added to the all the created or updated organizations in Auth0.
+
+```bash
+npm run create -- \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+or
+```bash
+./scripts/create.mjs \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+
 ### Starting with a programmatic token
 
 See `sync` for how to get a programmatic token
@@ -51,3 +70,29 @@ Otherwise
   --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
   --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>'
 ```
+
+#### With default connection
+
+Additional optional `CONNECTION_NAME` parameter is available to configure default connection.
+The connection will be added to the all the created or updated organizations in Auth0.
+
+```bash
+npm run create -- \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
+  --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
+  --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
+  --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>' \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+or
+```bash
+./scripts/create.mjs \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
+  --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
+  --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
+  --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>' \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+

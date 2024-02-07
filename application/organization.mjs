@@ -53,6 +53,23 @@ export async function updateOrganizationById(id, organization) {
   return response.json();
 }
 
+export async function addConnectionToOrg(id, connection) {
+  /**
+   *  https://auth0.com/docs/api/management/organizations/{id}/enabled_connections
+   */
+  const url = new URL(
+    `https://${AUTH0_DOMAIN}/api/v2/organizations/${id}/enabled_connections`,
+  );
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: await getHeaders(),
+    body: JSON.stringify(connection),
+  });
+
+  return response.json();
+}
+
 export async function deleteOrganizationById(id) {
   return fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
     method: 'DELETE',

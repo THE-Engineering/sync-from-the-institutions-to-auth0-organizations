@@ -1,4 +1,4 @@
-import { STATUS_DIRECTORY_PATH } from '#config';
+import { STATUS_DIRECTORY_PATH, CONNECTION_NAME } from '#config';
 import toStatusFilePath from '#utils/to-status-file-path';
 import toStatusFromError from '#utils/to-status-from-error';
 import writeStatusToFilePath from '#utils/write-status-to-file-path';
@@ -13,14 +13,26 @@ import {
   createOrganization,
   getOrganizationByName,
   updateOrganizationById,
+  addConnectionToOrg,
   getStatusCode,
   getMetadata,
   hasChangedMetaData,
 } from './organization.mjs';
+import { getConnectionByName, connectionIsEnabledForOrg } from '#application/connection';
 
 const DURATION = ONE_SECOND + QUARTER_SECOND;
 
 export default async function change(institutions) {
+  let connection;
+
+  if (CONNECTION_NAME) {
+    connection = await getConnectionByName(CONNECTION_NAME);
+
+    if (!connection) {
+      throw new Error(`Connection "${CONNECTION_NAME}" not found`);
+    }
+  }
+
   while (institutions.length) {
     const institution = institutions.shift();
     const institutionId = getInstitutionId(institution);
@@ -33,6 +45,7 @@ export default async function change(institutions) {
     if (statusCode === 403) throw new Error('FORBIDDEN');
 
     console.log(`👉 ${institutionId || '-'} "${(institutionName || '-').trim()}"`);
+
     if (statusCode === 404) {
       let status;
       try {
@@ -40,6 +53,16 @@ export default async function change(institutions) {
           name: institutionId,
           display_name: institutionName,
           metadata: targetInstitutionMetaData,
+          ...(connection
+            ? {
+                enabled_connections: [
+                  {
+                    connection_id: connection.id,
+                    assign_membership_on_login: false,
+                  },
+                ],
+              }
+            : {}),
         });
       } catch (e) {
         status = toStatusFromError(e);
@@ -74,6 +97,28 @@ export default async function change(institutions) {
         } catch (e) {
           status = toStatusFromError(e);
 
+          institutions.push(institution);
+        }
+
+        await writeStatusToFilePath(
+          toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId),
+          status,
+        );
+      }
+
+      if (
+        connection &&
+        !(await connectionIsEnabledForOrg(organization.id, connection.id))
+      ) {
+        let status;
+
+        try {
+          status = addConnectionToOrg(organization.id, {
+            connection_id: connection.id,
+            assign_membership_on_login: false,
+          });
+        } catch (e) {
+          status = toStatusFromError(e);
           institutions.push(institution);
         }
 

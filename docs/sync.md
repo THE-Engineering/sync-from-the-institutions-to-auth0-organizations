@@ -64,6 +64,29 @@ Otherwise
   --NAP 1800000
 ```
 
+#### With default connection
+
+Additional optional `CONNECTION_NAME` parameter is available to configure default connection.
+The connection will be added to the all the created or updated organizations in Auth0.
+
+
+```bash
+npm run sync -- \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --NAP 1800000 \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+or
+```bash
+./scripts/sync.mjs \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_ACCESS_TOKEN '<AUTH0 MANUAL ACCESS TOKEN>' \
+  --NAP 1800000 \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+
+
 ### Starting with a programmatic token
 
 You need
@@ -122,4 +145,32 @@ Otherwise
   --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
   --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>' \
   --NAP 1800000
+```
+
+#### With default connection
+
+Additional optional `CONNECTION_NAME` parameter is available to configure default connection.
+The connection will be added to the all the created or updated organizations in Auth0.
+
+
+```bash
+npm run sync -- \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
+  --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
+  --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
+  --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>' \
+  --NAP 1800000 \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
+```
+or
+```bash
+./scripts/sync.mjs \
+  --AUTH0_DOMAIN '<AUTH0 DOMAIN>' \
+  --AUTH0_CLIENT_ID '<AUTH0 CLIENT ID>' \
+  --AUTH0_CLIENT_SECRET '<AUTH0 CLIENT SECRET>' \
+  --AUTH0_AUDIENCE '<AUTH0 AUDIENCE>' \
+  --AUTH0_ACCESS_TOKEN_ENDPOINT '<AUTH0 RESOURCE>' \
+  --NAP 1800000 \
+  --CONNECTION_NAME '<CONNECTION_NAME>'
 ```
