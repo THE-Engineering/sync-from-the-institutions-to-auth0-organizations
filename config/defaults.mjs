@@ -10,3 +10,5 @@ export const DEFAULT_THE_INSTITUTIONS_ENDPOINT_COUNT = 0;
 export const DEFAULT_STATUS_DIRECTORY_PATH = './json/status';
 
 export const DEFAULT_MEMORY_STATS_DECIMAL_PLACES = 2;
+
+export const DEFAULT_CONNECTION_NAME = '';
