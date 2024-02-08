@@ -106,10 +106,14 @@ export default async function change(institutions) {
         );
       }
 
-      if (
-        connection &&
-        !(await connectionIsEnabledForOrg(organization.id, connection.id))
-      ) {
+      if (connection) {
+        try {
+          if (await connectionIsEnabledForOrg(organization.id, connection.id)) continue;
+        } catch (e) {
+          institutions.push(institution);
+          continue;
+        }
+
         let status;
 
         try {
@@ -123,7 +127,7 @@ export default async function change(institutions) {
         }
 
         await writeStatusToFilePath(
-          toStatusFilePath(STATUS_DIRECTORY_PATH, institutionId),
+          toStatusFilePath(STATUS_DIRECTORY_PATH, `${institutionId}-connection`),
           status,
         );
       }
