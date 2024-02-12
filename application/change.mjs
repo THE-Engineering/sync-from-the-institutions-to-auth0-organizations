@@ -108,28 +108,32 @@ export default async function change(institutions) {
 
       if (connection) {
         try {
-          if (await connectionIsEnabledForOrg(organization.id, connection.id)) continue;
+          if (await connectionIsEnabledForOrg(organization.id, connection.id)) {
+            console.log(
+              `💪 Connection "${connection.id}" is already enabled for "${organization.id}"`,
+            );
+          } else {
+            console.log(
+              `👉 Connection "${connection.id}" is not enabled for "${organization.id}, enabling...`,
+            );
+
+            const status = addConnectionToOrg(organization.id, {
+              connection_id: connection.id,
+              assign_membership_on_login: false,
+            });
+
+            await writeStatusToFilePath(
+              toStatusFilePath(STATUS_DIRECTORY_PATH, `${institutionId}-connection`),
+              status,
+            );
+          }
         } catch (e) {
           institutions.push(institution);
-          continue;
+          await writeStatusToFilePath(
+            toStatusFilePath(STATUS_DIRECTORY_PATH, `${institutionId}-connection`),
+            toStatusFromError(e),
+          );
         }
-
-        let status;
-
-        try {
-          status = addConnectionToOrg(organization.id, {
-            connection_id: connection.id,
-            assign_membership_on_login: false,
-          });
-        } catch (e) {
-          status = toStatusFromError(e);
-          institutions.push(institution);
-        }
-
-        await writeStatusToFilePath(
-          toStatusFilePath(STATUS_DIRECTORY_PATH, `${institutionId}-connection`),
-          status,
-        );
       }
     }
 
