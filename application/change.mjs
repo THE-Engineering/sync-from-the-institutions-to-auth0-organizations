@@ -107,20 +107,23 @@ export default async function change(institutions) {
       }
 
       if (connection) {
-        try {
-          if (await connectionIsEnabledForOrg(organization.id, connection.id)) continue;
-        } catch (e) {
-          institutions.push(institution);
-          continue;
-        }
-
         let status;
 
         try {
-          status = addConnectionToOrg(organization.id, {
-            connection_id: connection.id,
-            assign_membership_on_login: false,
-          });
+          if (await connectionIsEnabledForOrg(organization.id, connection.id)) {
+            console.log(
+              `💪 Connection "${connection.id}" is already enabled for "${organization.id}"`,
+            );
+          } else {
+            console.log(
+              `👉 Connection "${connection.id}" is not enabled for "${organization.id}, enabling...`,
+            );
+
+            status = addConnectionToOrg(organization.id, {
+              connection_id: connection.id,
+              assign_membership_on_login: false,
+            });
+          }
         } catch (e) {
           status = toStatusFromError(e);
           institutions.push(institution);
