@@ -29,7 +29,12 @@ export async function readInstitutionsFromEndpoint(
    *  Changes to the reference data are expected to propagate in ~2hrs
    */
 
-  console.log(endpoint);
+  if(!URL.canParse(endpoint)) {
+    console.log("⚠️ Invalid endpoint provided for reading institutions: " + endpoint);
+  }
+
+  console.log("🔗Institutions endpoint: " + endpoint + " ...");
+
   const url = new URL(endpoint);
 
   url.search = new URLSearchParams({
@@ -37,9 +42,25 @@ export async function readInstitutionsFromEndpoint(
     ...(count ? { offset: count * limit } : {}),
   });
 
+
+  console.log("🔗Fetching institutions from: " + url);
+
   const response = await fetch(url);
 
-  const { rowCount, rows } = await response.json();
+  const jsonResponse = await response.json();
+
+  const neededKeys = ["rowCount", "rows"];
+
+  if(!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
+    console.error("⚠️ Invalid response from endpoint " + endpoint + ", as it does not contain required keys: "+JSON.stringify(neededKeys));
+    console.error("⚠️ Server responded instead with: " + await response.text());
+    return {
+      rowCount: getRowCount(accumulator),
+      rows: getRows(accumulator)
+    };
+  }
+
+  const {rowCount, rows} = jsonResponse;
 
   const institutions = {
     rowCount: getRowCount(accumulator) + rowCount,
