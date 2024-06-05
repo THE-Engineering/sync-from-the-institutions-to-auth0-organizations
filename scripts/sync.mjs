@@ -25,7 +25,13 @@ async function app() {
   console.log('🚀');
 
   const was = await readInstitutionsFromFilePath(FILE_PATH);
-  const now = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT);
+  let now = undefined;
+
+  try {
+    now = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT);
+  } catch(error) {
+    console.error('Something went wrong reading the institutions from the refdata-api. Institution reconciliation will not work with a partial list of institutions, so I am bailing out!')
+  }
 
   if (!isDeepStrictEqual(was, now)) {
     await change(getChangedInstitutions(was, now));
