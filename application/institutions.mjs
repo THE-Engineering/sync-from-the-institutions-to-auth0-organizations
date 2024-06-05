@@ -29,11 +29,11 @@ export async function readInstitutionsFromEndpoint(
    *  Changes to the reference data are expected to propagate in ~2hrs
    */
 
-  if(!URL.canParse(endpoint)) {
-    console.log("⚠️ Invalid endpoint provided for reading institutions: " + endpoint);
+  if (!URL.canParse(endpoint)) {
+    console.log('⚠️ Invalid endpoint provided for reading institutions: ' + endpoint);
   }
 
-  console.log("🔗Institutions endpoint: " + endpoint + " ...");
+  console.log('🔗Institutions endpoint: ' + endpoint + ' ...');
 
   const url = new URL(endpoint);
 
@@ -43,30 +43,30 @@ export async function readInstitutionsFromEndpoint(
   });
 
 
-  console.log("🔗Fetching institutions from: " + url);
+  console.log('🔗Fetching institutions from: ' + url);
 
   const response = await fetch(url);
 
   const jsonResponse = await response.json();
 
-  const neededKeys = ["rowCount", "rows"];
+  const neededKeys = ['rowCount', 'rows'];
 
-  if(!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
-    console.error("⚠️ Invalid response from endpoint " + endpoint + ", as it does not contain required keys: "+JSON.stringify(neededKeys));
-    console.error("⚠️ Server responded instead with: " + await response.text());
-    return {
-      rowCount: getRowCount(accumulator),
-      rows: getRows(accumulator)
-    };
+  if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
+    console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
+    console.error('⚠️ Server responded instead with: ' + await response.text());
+    throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
   }
 
-  const {rowCount, rows} = jsonResponse;
+  const { rowCount, rows } = jsonResponse;
+
+  console.log('ℹ️ Fetched ' + rows.length + ' rows from ' + url + '. API returned rowCount = ' + rowCount);
 
   const institutions = {
     rowCount: getRowCount(accumulator) + rowCount,
     rows: getRows(accumulator).concat(rows),
   };
 
+  // if we get a full page of results, there may be some more to fetch
   if (rowCount === limit) {
     return readInstitutionsFromEndpoint(endpoint, limit, count + 1, institutions);
   }
