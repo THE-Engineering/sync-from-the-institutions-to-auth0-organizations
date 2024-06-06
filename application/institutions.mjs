@@ -8,6 +8,7 @@ import {
 } from '#config';
 import handleFilePathError from '#utils/handle-file-path-error';
 import { getId as getInstitutionId } from './institution.mjs';
+import pRetry from 'p-retry';
 
 export function getRowCount({ rowCount = 0 } = {}) {
   return rowCount;
@@ -42,22 +43,30 @@ export async function readInstitutionsFromEndpoint(
     ...(count ? { offset: count * limit } : {}),
   });
 
+  const fetchInstitutionsOrFail = async () => {
+    console.log('🔗Fetching institutions from: ' + url);
+    const response = await fetch(url);
 
-  console.log('🔗Fetching institutions from: ' + url);
+    const jsonResponse = await response.json();
 
-  const response = await fetch(url);
+    const neededKeys = ['rowCount', 'rows'];
 
-  const jsonResponse = await response.json();
+    if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
+      console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
+      console.error('⚠️ Server responded instead with: ' + await response.text());
+      throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
+    }
 
-  const neededKeys = ['rowCount', 'rows'];
-
-  if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
-    console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
-    console.error('⚠️ Server responded instead with: ' + await response.text());
-    throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
+    return jsonResponse;
   }
 
-  const { rowCount, rows } = jsonResponse;
+  const { rowCount, rows } = await pRetry(
+    fetchInstitutionsOrFail, {
+      retries: 10,
+      onFailedAttempt: error => {
+        console.log(`Attempt to fetch institutions No. ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`);
+      }
+    }) ;
 
   console.log('ℹ️ Fetched ' + rows.length + ' rows from ' + url + '. API returned rowCount = ' + rowCount);
 
