@@ -8,12 +8,17 @@ import {
 let AUTHORIZATION = {};
 let AUTHORIZED_AT = 0;
 
+// offset to attempt to refresh the authorisation before it actually expires,
+// so we never end up with expired credentials even when there is a slight
+// delay in the refresh
+const EARLY_REFRESH_OFFSET = 5000;
+
 function isExpired({ expires_in: expiresIn = 0 } = {}) {
   /*
    *  `expiresIn` is a number of SECONDS
    *  `authorisedAt` is a number representing a date in MILLISECONDS
    */
-  return AUTHORIZED_AT + expiresIn * 1000 < Date.now();
+  return AUTHORIZED_AT + expiresIn * 1000 - EARLY_REFRESH_OFFSET < Date.now();
 }
 
 function isAuthorized({ access_token: accessToken } = {}) {
@@ -44,8 +49,12 @@ async function getAuthorizationFromResource() {
 
 async function getAuthorization() {
   if (isExpired(AUTHORIZATION)) {
+    console.log("Refreshing expired authorisation from auth0...")
     AUTHORIZATION = await getAuthorizationFromResource();
-    if (!isAuthorized(AUTHORIZATION)) throw new Error('NOT_AUTHORIZED');
+    if (!isAuthorized(AUTHORIZATION)) {
+      console.error("Invalid authorisation received from auth0, this is a fatal error.")
+      throw new Error('NOT_AUTHORIZED');
+    }
     AUTHORIZED_AT = Date.now();
   }
 
