@@ -52,7 +52,7 @@ async function getAuthorization() {
     console.log("Refreshing expired authorisation from auth0...")
     AUTHORIZATION = await getAuthorizationFromResource();
     if (!isAuthorized(AUTHORIZATION)) {
-      console.error("Invalid authorisation received from auth0, this is a fatal error.")
+      console.log("Invalid authorisation received from auth0, this is a fatal error.")
       throw new Error('NOT_AUTHORIZED');
     }
     AUTHORIZED_AT = Date.now();

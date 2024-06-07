@@ -52,8 +52,8 @@ export async function readInstitutionsFromEndpoint(
     const neededKeys = ['rowCount', 'rows'];
 
     if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
-      console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
-      console.error('⚠️ Server responded instead with: ' + await response.text());
+      console.log('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
+      console.log('⚠️ Server responded instead with: ' + await response.text());
       throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
     }
 
