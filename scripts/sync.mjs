@@ -30,8 +30,9 @@ async function app() {
   try {
     now = await readInstitutionsFromEndpoint(ENDPOINT, LIMIT, COUNT);
   } catch(error) {
-    console.error(JSON.stringify(error));
-    console.error('Something went wrong reading the institutions from the refdata-api. Institution reconciliation will not work with a partial list of institutions, so I am bailing out!')
+    console.log(error);
+    console.log('Something went wrong reading the institutions from the refdata-api. Institution reconciliation will not work with a partial list of institutions, so I am bailing out!')
+    throw error;
   }
 
   if (!isDeepStrictEqual(was, now)) {
