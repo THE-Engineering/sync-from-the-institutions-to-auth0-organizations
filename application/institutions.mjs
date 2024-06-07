@@ -9,6 +9,7 @@ import {
 import handleFilePathError from '#utils/handle-file-path-error';
 import { getId as getInstitutionId } from './institution.mjs';
 import pRetry from 'p-retry';
+import { withRetries } from '#utils/with-retries';
 
 export function getRowCount({ rowCount = 0 } = {}) {
   return rowCount;
@@ -56,13 +57,10 @@ export async function readInstitutionsFromEndpoint(
     return jsonResponse;
   }
 
-  const { rowCount, rows } = await pRetry(
-    fetchInstitutionsOrFail, {
-      retries: 10,
-      onFailedAttempt: error => {
-        console.log(`Attempt to fetch institutions No. ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`);
-      }
-    }) ;
+  const { rowCount, rows } = await withRetries({
+    operation: fetchInstitutionsOrFail,
+    operationDescription: "FetchInstitutions",
+  })
 
   console.log('ℹ️ Fetched ' + rows.length + ' rows from ' + url + '. API returned rowCount = ' + rowCount);
 
