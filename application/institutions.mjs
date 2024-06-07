@@ -30,10 +30,6 @@ export async function readInstitutionsFromEndpoint(
    *  Changes to the reference data are expected to propagate in ~2hrs
    */
 
-  if (!URL.canParse(endpoint)) {
-    console.log('⚠️ Invalid endpoint provided for reading institutions: ' + endpoint);
-  }
-
   console.log('🔗Institutions endpoint: ' + endpoint + ' ...');
 
   const url = new URL(endpoint);
