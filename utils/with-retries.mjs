@@ -6,7 +6,7 @@ export const withRetries = async ({operation, retries = 10, operationDescription
       retries,
       onFailedAttempt: error => {
         console.log(operationDescription);
-        console.log(`Attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`);
+        console.log(`[${operationDescription}] Attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`);
       },
     }) ;
 }

@@ -35,8 +35,6 @@ async function app() {
     throw error;
   }
 
-  return;
-
   if (!isDeepStrictEqual(was, now)) {
     await change(getChangedInstitutions(was, now));
     await remove(getRemovedInstitutions(was, now));
