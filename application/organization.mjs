@@ -25,101 +25,93 @@ export function getStatusCode({ statusCode }) {
 }
 
 export async function createOrganization(organization) {
-  const operation = async () => {
-    const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations`, {
-      method: 'POST',
-      headers: await getHeaders(),
-      body: JSON.stringify(organization),
-    });
-
-    await throwOnError(response);
-    return response.json();
-  };
-
   return withRetries({
-    operation,
-    operationDescription: 'createOrganization'
-  })
+    operation: async () => {
+      const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations`, {
+        method: 'POST',
+        headers: await getHeaders(),
+        body: JSON.stringify(organization),
+      });
+
+      await throwOnError(response);
+      return response.json();
+    },
+    operationDescription: 'createOrganization',
+  });
 }
 
 export async function getOrganizationByName(name) {
-  const operation = async () => {
-    const response = await fetch(
-      `https://${AUTH0_DOMAIN}/api/v2/organizations/name/${name}`,
-      {
-        headers: await getHeaders(),
-      },
-    );
-
-    await throwOnError(response);
-    return response.json();
-  }
 
   return withRetries({
-    operation,
-    operationDescription: 'createOrganization'
-  })
+    operation: async () => {
+      const response = await fetch(
+        `https://${AUTH0_DOMAIN}/api/v2/organizations/name/${name}`,
+        {
+          headers: await getHeaders(),
+        },
+      );
+
+      await throwOnError(response);
+      return response.json();
+    },
+    operationDescription: 'createOrganization',
+  });
 }
 
 export async function updateOrganizationById(id, organization) {
-  const operation = async () => {
-    const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
-      method: 'PATCH',
-      headers: await getHeaders(),
-      body: JSON.stringify(organization),
-    });
-
-    await throwOnError(response);
-    return response.json();
-  }
 
   return withRetries({
-    operation,
-    operationDescription: 'updateOrganizationById'
-  })
+    operation: async () => {
+      const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
+        method: 'PATCH',
+        headers: await getHeaders(),
+        body: JSON.stringify(organization),
+      });
+
+      await throwOnError(response);
+      return response.json();
+    },
+    operationDescription: 'updateOrganizationById',
+  });
 }
 
 export async function addConnectionToOrg(id, connection) {
-  const operation = async () => {
-    /**
-     *  https://auth0.com/docs/api/management/organizations/{id}/enabled_connections
-     */
-    const url = new URL(
-      `https://${AUTH0_DOMAIN}/api/v2/organizations/${id}/enabled_connections`,
-    );
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: await getHeaders(),
-      body: JSON.stringify(connection),
-    });
-
-    await throwOnError(response);
-    return response.json();
-  }
-
   return withRetries({
-    operation,
-    operationDescription: 'addConnectionToOrg'
-  })
+    operation: async () => {
+      /**
+       *  https://auth0.com/docs/api/management/organizations/{id}/enabled_connections
+       */
+      const url = new URL(
+        `https://${AUTH0_DOMAIN}/api/v2/organizations/${id}/enabled_connections`,
+      );
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: await getHeaders(),
+        body: JSON.stringify(connection),
+      });
+
+      await throwOnError(response);
+      return response.json();
+    },
+    operationDescription: 'addConnectionToOrg',
+  });
 }
 
 export async function deleteOrganizationById(id) {
-  const operation = async () => {
-
-    const response = fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
-      method: 'DELETE',
-      headers: await getHeaders(),
-    });
-
-    await throwOnError(response);
-    return response;
-  };
-
   return withRetries({
-    operation,
-    operationDescription: 'deleteOrganizationById'
-  })
+    operation: async () => {
+
+      const response = fetch(`https://${AUTH0_DOMAIN}/api/v2/organizations/${id}`, {
+        method: 'DELETE',
+        headers: await getHeaders(),
+      });
+
+      await throwOnError(response);
+      return response;
+    },
+    operationDescription: 'deleteOrganizationById',
+  });
 }
 
 export function hasChangedMetaData(organizationMetaData, targetMetaData) {

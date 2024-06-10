@@ -7,30 +7,28 @@ import { getName as getOrganizationName } from './organization.mjs';
 import { withRetries } from '#utils/with-retries';
 
 export async function getOrganizations(from, accumulator = []) {
-  const operation = async () => {
-    /**
-     *  https://auth0.com/docs/api/management/v2#!/Organizations/get_organizations
-     *  We use Checkpoint Pagination to get the complete list (while aware of the
-     *  rate limits)
-     */
-    const url = new URL('/api/v2/organizations', `https://${AUTH0_DOMAIN}`);
-
-    url.search = new URLSearchParams({
-      take: 50,
-      ...(from ? { from } : {}),
-    });
-
-    const response = await fetch(url, {
-      headers: await getHeaders(),
-    });
-
-    return await response.json();
-  }
-
   const { next, organizations } = withRetries({
-    operation,
-    operationDescription: 'getOrganizations'
-  })
+    operation: async () => {
+      /**
+       *  https://auth0.com/docs/api/management/v2#!/Organizations/get_organizations
+       *  We use Checkpoint Pagination to get the complete list (while aware of the
+       *  rate limits)
+       */
+      const url = new URL('/api/v2/organizations', `https://${AUTH0_DOMAIN}`);
+
+      url.search = new URLSearchParams({
+        take: 50,
+        ...(from ? { from } : {}),
+      });
+
+      const response = await fetch(url, {
+        headers: await getHeaders(),
+      });
+
+      return await response.json();
+    },
+    operationDescription: 'getOrganizations',
+  });
 
   if (next) {
     await sleepFor(ONE_SECOND);

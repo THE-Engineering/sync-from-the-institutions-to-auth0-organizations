@@ -7,38 +7,34 @@ export async function getConnectionByName(name) {
   /**
    *  https://auth0.com/docs/api/management/v2/connections/get-connections
    */
-  const operation = async () => {
-    const url = new URL(`https://${AUTH0_DOMAIN}/api/v2/connections`);
-    url.searchParams.set('name', name);
-
-    const response = await fetch(url, { headers: await getHeaders() });
-    await throwOnError(response);
-    const connections = await response.json();
-    return connections[0];
-  }
-
   return withRetries({
-    operation,
-    operationDescription: 'getConnectionByName'
-  })
+    operation: async () => {
+      const url = new URL(`https://${AUTH0_DOMAIN}/api/v2/connections`);
+      url.searchParams.set('name', name);
+
+      const response = await fetch(url, { headers: await getHeaders() });
+      await throwOnError(response);
+      const connections = await response.json();
+      return connections[0];
+    },
+    operationDescription: 'getConnectionByName',
+  });
 }
 
 export async function connectionIsEnabledForOrg(organizationId, connectionId) {
   /**
    *  https://auth0.com/docs/api/management/v2/organizations/get-enabled-connections-by-connection-id
    */
-  const operation = async () => {
-    const url = new URL(
-      `https://${AUTH0_DOMAIN}/api/v2/organizations/${organizationId}/enabled_connections/${connectionId}`,
-    );
-    const response = await fetch(url, { headers: await getHeaders() });
-    await throwOnError(response);
-
-    return response.ok;
-  };
-
   return withRetries({
-    operation,
-    operationDescription: 'connectionIsEnabledForOrg'
-  })
+    operation: async () => {
+      const url = new URL(
+        `https://${AUTH0_DOMAIN}/api/v2/organizations/${organizationId}/enabled_connections/${connectionId}`,
+      );
+      const response = await fetch(url, { headers: await getHeaders() });
+      await throwOnError(response);
+
+      return response.ok;
+    },
+    operationDescription: 'connectionIsEnabledForOrg',
+  });
 }

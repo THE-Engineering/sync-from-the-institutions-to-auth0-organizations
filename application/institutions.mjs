@@ -39,27 +39,25 @@ export async function readInstitutionsFromEndpoint(
     ...(count ? { offset: count * limit } : {}),
   });
 
-  const fetchInstitutionsOrFail = async () => {
-    console.log('🔗Fetching institutions from: ' + url);
-    const response = await fetch(url);
-
-    const jsonResponse = await response.json();
-
-    const neededKeys = ['rowCount', 'rows'];
-
-    if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
-      console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
-      console.error('⚠️ Server responded instead with: ' + await response.text());
-      throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
-    }
-
-    return jsonResponse;
-  }
-
   const { rowCount, rows } = await withRetries({
-    operation: fetchInstitutionsOrFail,
-    operationDescription: "FetchInstitutions",
-  })
+    operation: async () => {
+      console.log('🔗Fetching institutions from: ' + url);
+      const response = await fetch(url);
+
+      const jsonResponse = await response.json();
+
+      const neededKeys = ['rowCount', 'rows'];
+
+      if (!(neededKeys.every((key) => Object.keys(jsonResponse).includes(key)))) {
+        console.error('⚠️ Invalid response from endpoint ' + endpoint + ', as it does not contain required keys: ' + JSON.stringify(neededKeys));
+        console.error('⚠️ Server responded instead with: ' + await response.text());
+        throw new Error('Unable to fetch institutions from refdata-api at endpoint ' + endpoint);
+      }
+
+      return jsonResponse;
+    },
+    operationDescription: 'FetchInstitutions',
+  });
 
   console.log('ℹ️ Fetched ' + rows.length + ' rows from ' + url + '. API returned rowCount = ' + rowCount);
 

@@ -1,8 +1,8 @@
 import pRetry from 'p-retry';
 
-export const withRetries = async ({operation, retries = 10, operationDescription}) => {
+export const withRetries = async ({operation: perform, retries = 10, operationDescription}) => {
   return pRetry(
-    operation, {
+    perform, {
       retries,
       onFailedAttempt: error => {
         console.log(operationDescription);
