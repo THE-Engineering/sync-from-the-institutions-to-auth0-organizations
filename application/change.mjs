@@ -110,11 +110,11 @@ export default async function change(institutions) {
         try {
           if (await connectionIsEnabledForOrg(organization.id, connection.id)) {
             console.log(
-              `💪 Connection "${connection.id}" is already enabled for "${organization.id}" (${institutionName})`,
+              `💪 Connection "${connection.id}" is already enabled for "${organization.id}" (${institutionId})`,
             );
           } else {
             console.log(
-              `👉 Connection "${connection.id}" is not enabled for "${organization.id} (${institutionName}), enabling...`,
+              `👉 Connection "${connection.id}" is not enabled for "${organization.id} (${institutionId}) , enabling...`,
             );
 
             const status = addConnectionToOrg(organization.id, {
