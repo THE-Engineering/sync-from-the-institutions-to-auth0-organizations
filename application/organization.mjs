@@ -51,10 +51,10 @@ export async function getOrganizationByName(name) {
         },
       );
 
-      await throwOnError(response);
+      await throwOnError(response,[404]) ;
       return response.json();
     },
-    operationDescription: 'createOrganization',
+    operationDescription: 'getOrganizationByName',
   });
 }
 
